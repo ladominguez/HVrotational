@@ -1,13 +1,9 @@
 clear; clc
 format short
 
-rutaarch = 'C:\Users\mbaen\POSDOC\MBR\RuidoGEOFmat\';
-rutagrab = 'C:\Users\mbaen\POSDOC\MBR\HVRuidoGEOF\';
+rutaarch = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/matlab/mat/';
+rutagrab = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/matlab/';
 
-listest = dir(fullfile(rutaarch));
-listest = {listest.name}';
-bal = find(ismember(listest,[{'.'};{'..'}])==1);
-listest(bal) = [];
 
 %% DATOS INICIALES
 senhal = 'noise';
@@ -38,30 +34,28 @@ Smin = 0.2;
 dfnew = 1;
 
 % Si baja el tLTA es más conservador
-
 itertot = length(segvent)*length(porctrasl)*length(normalizac(:,1))*length(tiempoHV);
+separador = obtener_separador_linux_window();
 
 %% Buscar estación
+listest = dir(fullfile(rutaarch));
+listest = {listest.name}';
+bal = find(ismember(listest,[{'.'};{'..'}])==1);
+listest(bal) = [];
+
 buscar = listest;
 buscar = {'TOME'};        % ¡¡¡ESCOGER ESTACIÓN!!!
 
-%%
-figure(100)
-p = load('progresivo');
-p = p.mycmap;
-p = colormap(jet);
-close(100)
+%% Invierte la escala de colores,se puede comentar
+col = get_colors(itertot);
 
-Ncomb = itertot;
-porc = length(p(:,1))/Ncomb;
-for i = 1:Ncomb
-    col(i,:) = p(ceil(porc*i),:);
-end
-col = flipud(col);
+
+%%
 
 % tetarot = 0:45:180;
 tetarot = 0;
 [~,Nbuscar] = ismember(buscar,listest);
+
 for aleat = 1 %:10
 
     % Ciclo para estaciones
@@ -69,43 +63,29 @@ for aleat = 1 %:10
         estac = listest{Nbuscar(ee)};
         fprintf(1,'%d%s%d%s%s\n',ee,'/',length(buscar),' --> ',estac);
 
-        if ~exist(rutagrab,'dir'); mkdir(rutagrab); end
-        if ~exist([rutagrab,estac],'dir'); mkdir([rutagrab,estac]); end
-        nombgrab = [rutagrab,estac,'\HV_',estac];
-        % if exist(nombgrab,'file') ~= 0; continue; end
+        crear_directorios(rutagrab, estac)
+        nombgrab = [rutagrab,estac,[separador 'HV_'],estac];
+
 
         listreg = dir(fullfile(rutaarch,estac,unidad,'*.mat'));
         listreg = {listreg.name}'; %name
-        listdias00 = {};
-        for i = 1:length(listreg)
-            listdias00{i,1} = listreg{i}(1:8);
-        end
-        listdias = unique(listdias00);
-    
+
+        listdias = obtener_lista_dias(listreg);
         buscardia = listdias;
+
         % buscardia = {'20200929';'20200116';'20201129'};
         [~,Nbuscardia] = ismember(buscardia,listdias);
         leyenda = [];
+
+        % Loop por cada día
         for dd = 1:length(Nbuscardia)
             k = Nbuscardia(dd);
 
             nombgrab0 = [nombgrab,'_',listdias{k},'.mat'];
             % if exist(nombgrab0,'file') ~= 0; continue; end
 
-            cont0 = 0;
-            ESTR = [];
-            vecfechahms = [];
-            for i = 1:length(listreg)
-                if strcmp(listreg{i}(1:8),listdias{k})
-                    cont0 = cont0+1;
-                    REG = load([rutaarch,estac,'\',unidad,'\',listreg{i}]);
-                    ESTR.EW(:,cont0) = double(REG.EW);
-                    ESTR.NS(:,cont0) = double(REG.NS);
-                    ESTR.VE(:,cont0) = double(REG.VE);
-                    ESTR.dt(cont0,1) = REG.dt;
-                    vecfechahms = [vecfechahms;{[listreg{i}(1:8),'_',listreg{i}(9:end-4)]}];
-                end
-            end
+            [ESTR, vecfechahms] = leer_datos(rutaarch, estac, unidad, listreg, listdias{k});
+            
             dt = ESTR.dt(1);
             fmax = 1/(2*dt);
             [Nn,Nhoras] = size(ESTR.EW);
@@ -117,18 +97,14 @@ for aleat = 1 %:10
 
             HV.HVNSdir_comb1 = [];
             HV.HVEWdir_comb1 = [];
+
             for Nteta = 1:length(tetarot)
                 iter = 0;
                 ccd = 0;
                 Nv = 0;
 
                 % Rotación sismogramas
-                teta = tetarot(Nteta);
-                costeta = cosd(teta);
-                sinteta = sind(teta);
-                EW = ESTR.EW*costeta+ESTR.NS*sinteta;  %longitudinal
-                NS =-ESTR.EW*sinteta+ESTR.NS*costeta;  %transversal
-                VE = ESTR.VE;
+                [EW, NS, VE, teta] = rotar_sismogramas(ESTR, tetarot, Nteta);
 
                 fprintf(1,'\t%d%s%d%s%d\n',Nteta,'/',length(tetarot),' --> teta=',teta);
 
