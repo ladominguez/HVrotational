@@ -1,8 +1,13 @@
 clear
 format short
 
-rutaarch = 'C:\Users\mbaen\POSDOC\MBR\RuidoGEOF\';
-rutagrab = 'C:\Users\mbaen\POSDOC\MBR\RuidoGEOFmat\';
+%rutaarch = 'C:\Users\mbaen\POSDOC\MBR\RuidoGEOF\';
+%rutagrab = 'C:\Users\mbaen\POSDOC\MBR\RuidoGEOFmat\';
+
+rutaarch = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/data/';
+rutagrab = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/matlab/mat/';
+
+sep = obtener_separador_linux_window();
 
 listest = dir(fullfile(rutaarch));
 listest = {listest.name}';
@@ -45,16 +50,16 @@ if ~exist(rutagrab,'dir'); mkdir(rutagrab); end
 for k = 1:length(buscar)
     estac = listest{Nbuscar(k)};
 
-    fprintf(1,'%d%s%d%s%s\n',k,'/',length(buscar),' --> ',estac);
-    if ~exist([rutagrab,estac,'\',tiporeg],'dir')
-        mkdir([rutagrab,estac,'\',tiporeg]);
+    fprintf(1,'%d%s%d%s%s\n',k,sep,length(buscar),' --> ',estac);
+    if ~exist([rutagrab,estac,sep,tiporeg],'dir')
+        mkdir([rutagrab,estac,sep,tiporeg]);
     end
 
     listreg = dir(fullfile(rutaarch,estac,'*.sac'));
     listreg = {listreg.name}'; %name
     listregtot = cell(length(listreg),4);
     for i = 1:length(listreg)
-        REG = [rutaarch,estac,'\',listreg{i}];
+        REG = [rutaarch,estac,sep,listreg{i}];
         [~,~,datREG] = rdsac(REG);
         ymd = datetime(datREG.NZYEAR,01,0)+days(datREG.NZJDAY);
         hh = ['0',num2str(datREG.NZHOUR)];
@@ -78,21 +83,21 @@ for k = 1:length(buscar)
         indreg = find(ismember(listregtot(:,2),dias(m))==1);
         fechajuliana = listregtot{indreg(1),2};
         fechaymd = listregtot{indreg(1),3};
-        nombarchgrab = [rutagrab,estac,'\',tiporeg,'\',fechaymd,'.mat'];
+        nombarchgrab = [rutagrab,estac,sep,tiporeg,sep,fechaymd,'.mat'];
         % if exist(nombarchgrab,'file') ~= 0; continue; end
 
         % Lectura SAC
         for ii = 1:3
             if strcmp(listregtot{indreg(ii),4},'EW')
-                EWsac = [rutaarch,estac,'\',listregtot{indreg(ii),1}];
+                EWsac = [rutaarch,estac,sep,listregtot{indreg(ii),1}];
                 [datEW,iniEW,datosEW] = rdsac(EWsac);
                 datEW = double(datEW);
             elseif strcmp(listregtot{indreg(ii),4},'NS')
-                NSsac = [rutaarch,estac,'\',listregtot{indreg(ii),1}];
+                NSsac = [rutaarch,estac,sep,listregtot{indreg(ii),1}];
                 [datNS,iniNS,datosNS] = rdsac(NSsac);
                 datNS = double(datNS);
             elseif strcmp(listregtot{indreg(ii),4},'VE')
-                VEsac = [rutaarch,estac,'\',listregtot{indreg(ii),1}];
+                VEsac = [rutaarch,estac,sep,listregtot{indreg(ii),1}];
                 [datVE,iniVE,datosVE] = rdsac(VEsac);
                 datVE = double(datVE);
             end

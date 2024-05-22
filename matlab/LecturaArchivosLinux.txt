@@ -1,0 +1,10 @@
+% Lista de archivos de todas las estaciones de la RED
+listarch = ls(strcat('../',RED));
+j = 0;
+for i = 1:length(listarch)
+    if listarch(i,1) ~= '.'
+        j = j+1;
+        lineasok(j,1) = i;
+    end
+end
+listarch = listarch(lineasok,:);
