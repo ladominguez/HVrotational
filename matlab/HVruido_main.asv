@@ -56,15 +56,15 @@ col = get_colors(itertot);
 tetarot = 0;
 [~,Nbuscar] = ismember(buscar,listest);
 
-for aleat = 1 %:10
+for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
 
     % Ciclo para estaciones
     for ee = 1:length(buscar)
         estac = listest{Nbuscar(ee)};
         fprintf(1,'%d%s%d%s%s\n',ee,'/',length(buscar),' --> ',estac);
 
-        crear_directorios()
-        nombgrab = [rutagrab,estac,'/HV_',estac];
+        crear_directorios(rutagrab, estac)
+        nombgrab = [rutagrab,estac,[separador 'HV_'],estac];
 
 
         listreg = dir(fullfile(rutaarch,estac,unidad,'*.mat'));
@@ -76,26 +76,15 @@ for aleat = 1 %:10
         % buscardia = {'20200929';'20200116';'20201129'};
         [~,Nbuscardia] = ismember(buscardia,listdias);
         leyenda = [];
+
+        % Loop por cada día
         for dd = 1:length(Nbuscardia)
             k = Nbuscardia(dd);
 
             nombgrab0 = [nombgrab,'_',listdias{k},'.mat'];
             % if exist(nombgrab0,'file') ~= 0; continue; end
 
-            cont0 = 0;
-            ESTR = [];
-            vecfechahms = [];
-            for i = 1:length(listreg)
-                if strcmp(listreg{i}(1:8),listdias{k})
-                    cont0 = cont0+1;
-                    REG = load([rutaarch,estac,separador,unidad,separador,listreg{i}]);
-                    ESTR.EW(:,cont0) = double(REG.EW);
-                    ESTR.NS(:,cont0) = double(REG.NS);
-                    ESTR.VE(:,cont0) = double(REG.VE);
-                    ESTR.dt(cont0,1) = REG.dt;
-                    vecfechahms = [vecfechahms;{[listreg{i}(1:8),'_',listreg{i}(9:end-4)]}];
-                end
-            end
+            [ESTR, vecfechahms] = leer_datos(rutaarch, estac, unidad, listreg, listdias{k});
             
             dt = ESTR.dt(1);
             fmax = 1/(2*dt);
@@ -108,18 +97,14 @@ for aleat = 1 %:10
 
             HV.HVNSdir_comb1 = [];
             HV.HVEWdir_comb1 = [];
+
             for Nteta = 1:length(tetarot)
                 iter = 0;
                 ccd = 0;
                 Nv = 0;
 
                 % Rotación sismogramas
-                teta = tetarot(Nteta);
-                costeta = cosd(teta);
-                sinteta = sind(teta);
-                EW = ESTR.EW*costeta+ESTR.NS*sinteta;  %longitudinal
-                NS =-ESTR.EW*sinteta+ESTR.NS*costeta;  %transversal
-                VE = ESTR.VE;
+                [EW, NS, VE, teta] = rotar_sismogramas(ESTR, tetarot, Nteta);
 
                 fprintf(1,'\t%d%s%d%s%d\n',Nteta,'/',length(tetarot),' --> teta=',teta);
 
@@ -127,25 +112,7 @@ for aleat = 1 %:10
                 % CICLO LONGITUD DE VENTANAS
                 % *****************************************************
                 for vv = 1:length(segvent)
-                    ptosvent = round(segvent(vv)/dt);
-                    if rem(ptosvent,2) ~= 0; ptosvent = ptosvent-1; end
-                    Nespec = 1*ptosvent;
-                    NQ = Nespec/2+1;
-                    df = 1/(Nespec*dt);
 
-                    if df > dfnew
-                        NQ = fmax/dfnew+1;
-                        Nespec = (NQ-1)*2;
-                    end
-
-                    frec = linspace(0,fmax,NQ).';
-                    frec = round(frec*1000000)/1000000;
-                    flim1 = frec(1); %0.01
-                    flim2 = fmax; %20;
-                    ini = find(frec>=flim1,1,'first');
-                    fin = find(frec>=flim2,1,'first');
-                    f = frec(ini:fin);
-                    Nfrecred = fin-ini+1;
 
                     %% ****************************************************
                     % CICLO TRASLAPE DE VENTANAS
