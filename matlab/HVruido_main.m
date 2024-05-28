@@ -127,25 +127,9 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
 
                         %% Figuras para revisión 1
                         % plot_figura300(dt, Smax, STALTANS, STALTAEW, STALTAVE)
-                        
+                        % plot_figura201(dt, Smin, Smax, STALTAVE)
 
-                        %% Figuras para revisión 2
-                        % figure(201)
-                        % subplot(2,1,1)
-                        % plot(t,STALTAVE,'k'); hold on %; grid on
-                        % line([t(1) t(end)],[Smax Smax],'color','r','linestyle','--','linewidth',2)
-                        % line([t(1) t(end)],[Smin Smin],'color','r','linestyle',':','linewidth',2)
-                        % set(gca,'YTick',0:1:3)
-                        % ylabel('STA/LTA ratio','fontname','Times New Roman','fontSize',14)
-                        % xlim([0 t(end)])
-                        % ylim([0 3.5])
-                        % set(gca,'XTickLabel',[])
-                        % set(gca,'fontname','Times New Roman','fontSize',14)
-                        % h1 = plot(0,0,'k');
-                        % h2 = plot(0,0,'--r','linewidth',2);
-                        % h3 = plot(0,0,':r','linewidth',2);
-                        % lg = legend([h1 h2 h3],'STA/LTA',['(STA/LTA)max = ',num2str(Smax)],['(STA/LTA)min = ',num2str(Smin)]);
-                        % set(lg,'location','northwest','fontname','Times New Roman','fontSize',14)
+
 
                         % DIVISIÓN DE LA SEÑAL EN VENTANAS DE TIEMPO
 
