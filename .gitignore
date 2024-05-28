@@ -3,4 +3,6 @@ data
 matlab/mat
 *.zip
 **/*.mat
+**/*.asv
+**/*.swp
 tmp0

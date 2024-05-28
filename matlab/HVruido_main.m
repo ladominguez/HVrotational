@@ -122,29 +122,8 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                     for tt = 1:length(porctrasl)
 
                         % VENTANEO
-                        Ntras = floor(porctrasl(tt)/100*ptosvent);
-                        iv = (1:ptosvent-Ntras:Nn).';
-                        fv = iv+ptosvent-1;
-                        cambmax = [];
-                        cambmax = find(fv>Nn);
-                        if ~isempty(cambmax); fv(cambmax) = Nn; end
-                        tvent = [iv,fv,fv-iv+ones(length(iv),1)];
-                        elim = find(and(fv==Nn,tvent(:,3)<ptosvent));
-                        % if length(elim) >= 2; tvent(elim(2:end),:) = []; iv(elim(2:end)) = []; fv(elim(2:end)) = []; end
-                        tvent(elim,:) = []; iv(elim) = []; fv(elim) = [];
-                        M = length(iv);
-
-                        % ELIMINA LAS VENTANAS MÁS ENERGÉTICAS DE LA SEÑAL EN SEGUNDOS
-                        if Smax == 0
-                            wincleantot = ones(M,1);
-                        else
-                            % wincleantot = zeros(M,1);
-                            [wincleanEW,STALTAEW] = picossig6(EW,dt,iv,fv,tSTA,tLTA,Smax,Smin);
-                            [wincleanNS,STALTANS] = picossig6(NS,dt,iv,fv,tSTA,tLTA,Smax,Smin);
-                            [wincleanVE,STALTAVE] = picossig6(VE,dt,iv,fv,tSTA,tLTA,Smax,Smin);
-                            wincleantot = wincleanEW.*wincleanNS.*wincleanVE;
-                        end
-                        Nvent = sum(sum(wincleantot));
+                       
+                        [Nvent, M, iv, fv, wincleantot, wincleanEW, wincleanNS, wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl,ptosvent, Nn, EW, NS, VE, dt, tSTA, tLTA, Smax, Smin );
 
                         %% Figuras para revisión 1
                         % figure(300)
@@ -203,6 +182,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                         % set(lg,'location','northwest','fontname','Times New Roman','fontSize',14)
 
                         % DIVISIÓN DE LA SEÑAL EN VENTANAS DE TIEMPO
+
                         Ndias = length(vecfechahms);
                         Nvini = Ndias*M; %Nvini = M;
                         EWv = (zeros(ptosvent,Nvini)); %single
