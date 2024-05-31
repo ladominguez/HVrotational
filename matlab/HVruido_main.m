@@ -1,9 +1,7 @@
 clear; clc
 format short
 
-rutaarch = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/matlab/mat/';
-rutagrab = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/matlab/';
-
+cargar_rutas_locales
 
 %% DATOS INICIALES
 senhal = 'noise';
