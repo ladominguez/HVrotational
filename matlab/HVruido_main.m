@@ -91,6 +91,22 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
             [Nn,Nhoras] = size(ESTR.EW);
             f0 = [];
 
+            % estac: nombre de la estación
+            % paraadic: parámetros adicionales (fechas, número de ventanas para H/V, parámetros para STA/LTA, df)
+            % clavecomb: clave de cada combinación de parámetros
+            % Nvent: número de ventanas empleadas para el H/V
+            % fcomb: vector de frecuencias
+            % HVmean_comb: matriz con el H/V medio de cada combinación de parámetros (por columna)
+            % NVmean_comb: matriz con el H/V de cada combinación de parámetros, usando solo la componente norte-sur (por columna)
+            % EVmean_comb: matriz con el H/V de cada combinación de parámetros, usando solo la componente este-oeste (por columna)
+            % tiempoHV_orig_min: tiempo solicitado para el cálculo del H/V
+            % tiempoHV_real_min: tiempo real empleado para el cálculo del H/V
+            % f_comb1: vector de frecuencias de la combinación de parámetros 1
+            % HVtot_comb1: H/V de la combinación de parámetros 1
+            % HVNSdir_comb1: H/V direccional norte-sur empleando la combinación de parámetros 1
+            % HVEWdir_comb1: H/V direccional este-oeste empleando la combinación de parámetros 1
+            % tetarot: vector de ángulos de rotación para el H/V direccional
+
             HV = struct('estac',[],'paraadic',[],'clavecomb',[],'Nvent',[],'fcomb',[],'HVmean_comb',[],'NVmean_comb',[],'EVmean_comb',[], ...
                 'tiempoHV_orig_min',[],'tiempoHV_real_min',[], ...
                 'f_comb1',[],'HVtot_comb1',[],'HVNSdir_comb1',[],'HVEWdir_comb1',[],'tetarot',[]);
