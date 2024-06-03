@@ -150,19 +150,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                         [ventok, EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(vecfechahms, M, ptosvent, iv, wincleantot, fv, EW, NS, VE);
 
                         % VENTANAS EFECTIVAS
-                        EWv = EWv(:,ventok);
-                        NSv = NSv(:,ventok);
-                        VEv = VEv(:,ventok);
-                        fechahmsvent = fechahmsvent(ventok);
-
-                        ventNOefectiv = unique([find(sum(abs(EWv))==0) find(sum(abs(NSv))==0) find(sum(abs(VEv))==0)]);
-                        ventefectiv = 1:Nvent;
-                        ventefectiv(ventNOefectiv) = [];
-                        Nv = length(ventefectiv);
-                        EWv = EWv(:,ventefectiv);
-                        NSv = NSv(:,ventefectiv);
-                        VEv = VEv(:,ventefectiv);
-                        fechahmsvent = fechahmsvent(ventefectiv);
+                        [Nv, EWv, NSv, VEv, fechahmsvent]=ventanas_efectivas(EWv, NSv, VEv, ventok, fechahmsvent, Nvent);
 
                         if Nv == 0; continue; end
 
