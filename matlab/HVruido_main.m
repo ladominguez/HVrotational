@@ -155,13 +155,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                         if Nv == 0; continue; end
 
                         % REMUEVE LA MEDIA POR VENTANAS Y APLICA TAPER
-                        EWv = EWv-mean(EWv);
-                        NSv = NSv-mean(NSv);
-                        VEv = VEv-mean(VEv);
-                        tap = repmat(tukeywin(ptosvent,factap),1,length(NSv(1,:)));
-                        EWv = EWv.*tap;
-                        NSv = NSv.*tap;
-                        VEv = VEv.*tap;
+                        [EWv, NSv, VEv] = remover_media_taper(EWv, NSv, VEv, ptosvent, factap);
 
                         %% Figuras para revisión 1
                         % figure(300)
