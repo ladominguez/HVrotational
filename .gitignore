@@ -6,3 +6,4 @@ matlab/mat
 **/*.asv
 **/*.swp
 tmp0
+matlab/cargar_rutas_locales.m
