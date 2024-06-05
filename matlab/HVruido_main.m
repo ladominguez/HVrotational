@@ -2,6 +2,7 @@ clear; clc
 format short
 
 cargar_rutas_locales
+% addpath('utils')
 
 %% DATOS INICIALES
 senhal = 'noise';

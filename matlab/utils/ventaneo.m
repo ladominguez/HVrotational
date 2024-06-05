@@ -2,9 +2,9 @@ function [Nvent, M, iv, fv, wincleantot, wincleanEW, wincleanNS, wincleanVE, STA
     Ntras = floor(porctrasl/100*ptosvent);
     iv = (1:ptosvent-Ntras:Nn).';
     fv = iv+ptosvent-1;
-    cambmax = [];
+    % cambmax = [];
     cambmax = find(fv>Nn);
-    if ~isempty(cambmax); 
+    if ~isempty(cambmax)
         fv(cambmax) = Nn; 
     end
     tvent = [iv,fv,fv-iv+ones(length(iv),1)];
