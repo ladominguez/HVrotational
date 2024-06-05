@@ -8,11 +8,11 @@ function plot_figura201(dt, Smin, Smax, STALTAVE)
     line([t(1) t(end)],[Smax Smax],'color','r','linestyle','--','linewidth',2)
     line([t(1) t(end)],[Smin Smin],'color','r','linestyle',':','linewidth',2)
     set(gca,'YTick',0:1:3)
-    ylabel('STA/LTA ratio','fontname','Times New Roman','fontSize',20)
+    ylabel('STA/LTA ratio','fontname','Arial','fontSize',20)
     xlim([0 t(end)])
     ylim([0 3.5])
     set(gca,'XTickLabel',[])
-    set(gca,'fontname','Times New Roman','fontSize',14)
+    set(gca,'fontname','Arial','fontSize',14)
     h1 = plot(0,0,'k');
     h2 = plot(0,0,'--r','linewidth',2);
     h3 = plot(0,0,':r','linewidth',2);
