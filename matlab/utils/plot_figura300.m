@@ -98,4 +98,3 @@ for q = 1:length(wincleantot)
         % set(lg,'location','south outside','fontname','Times New Roman','fontSize',14)
     end
 end
-close(300)

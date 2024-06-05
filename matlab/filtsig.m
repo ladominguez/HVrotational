@@ -5,10 +5,7 @@ fmax = 1/(2*dt);
 if N*factap < 2; factap = 2/N; end
 
 % Taper a la señal
-taperini = factap*100; %0.1 5
-taperfin = factap*100; %0.1 5
-SIG_tap_int = taper_fun(SIG,taperfin,0,1);
-SIG_tap = taper_fun(SIG_tap_int,taperini,1,0);
+SIG_tap = SIG.*tukeywin(N,factap);
 
 % Diseño del filtro Butterworth
 norden = 2;
