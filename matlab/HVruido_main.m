@@ -9,8 +9,8 @@ senhal = 'noise';
 unidad = 'velo';  % DESP VELO ACEL
 
 % Filtro inicial de las señales
-w1 = 0; %1;     0=s/filtro
-w2 = 0; %255.9; 0=s/filtro
+w1new = 0; %1;     0=s/filtro
+w2new = 0; %255.9; 0=s/filtro
 
 % Factor de esquina para taper de señales
 factap = 0.01;
@@ -20,6 +20,7 @@ factap = 0.01;
 % onebit: 1=SI, 0=NO
 
 % SELECCIONAR DATOS
+NdiasHV = 3;
 segvent = [500];         % Segundos de las ventanas para inversión
 porctrasl = [25];        % Porcentaje de traslape de las ventanas
 normalizac = [2 0];      % Normalización: [band,onebit]
@@ -69,21 +70,27 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
         listreg = dir(fullfile(rutaarch,estac,unidad,'*.mat'));
         listreg = {listreg.name}'; %name
 
+
         listdias = obtener_lista_dias(listreg);
-        buscardia = listdias;
 
+        % buscardia = listdias;
         % buscardia = {'20200929';'20200116';'20201129'};
-        [~,Nbuscardia] = ismember(buscardia,listdias);
+        % [~,Nbuscardia] = ismember(buscardia,listdias);
+
+        diaini = (1:NdiasHV:length(listdias)).';
+
         leyenda = [];
-
         % Loop por cada día
-        for dd = 1:length(Nbuscardia)
-            k = Nbuscardia(dd);
+        %for dd = 1:length(Nbuscardia)
+        for dd = 1:length(diaini)
 
-            nombgrab0 = [nombgrab,'_',listdias{k},'.mat'];
+            inddia = diaini(dd);
+            %k = Nbuscardia(dd);
+            nombgrab0 = [nombgrab,'_',listdias{inddia},'.mat'];
             % if exist(nombgrab0,'file') ~= 0; continue; end
 
-            [ESTR, vecfechahms] = leer_datos(rutaarch, estac, unidad, listreg, listdias{k});
+            %[ESTR, vecfechahms] = leer_datos(rutaarch, estac, unidad, listreg, listdias{k});
+            [ESTR, dt] = leer_datos(rutaarch, estac, unidad, listreg, NdiasHV, inddia, w1new, w2new);
             
             dt = ESTR.dt(1);
             fmax = 1/(2*dt);
@@ -119,7 +126,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                 Nv = 0;
 
                 % Rotación sismogramas
-                [EW, NS, VE, teta] = rotar_sismogramas(ESTR, tetarot, Nteta);
+                [ESTR teta] = rotar_sismogramas(ESTR, tetarot( Nteta), Ndias );
 
                 fprintf(1,'\t%d%s%d%s%d\n',Nteta,'/',length(tetarot),' --> teta=',teta);
 
