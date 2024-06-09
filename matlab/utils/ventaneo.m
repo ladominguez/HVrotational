@@ -1,6 +1,6 @@
-function [Nvent, M, iv, fv, wincleantot, wincleanEW, wincleanNS, wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl, ptosvent, Nn, EW, NS, VE, dt, tSTA, tLTA, Smax, Smin )
+function [Nventefec, M, iv, fv, wincleantot, wincleanEW, wincleanNS, wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl, ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias)
 
-    Ntras = floor(porctrasl(tt)/100*ptosvent);
+    Ntras = floor(porctrasl/100*ptosvent);
     iv = {};
     fv = {};
     M = 0;
