@@ -94,7 +94,8 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
             
             dt = ESTR.dt(1);
             fmax = 1/(2*dt);
-            [Nn,Nhoras] = size(ESTR.EW);
+            
+            [~,Ndias] = size(ESTR.EW);
             f0 = [];
 
             % estac: nombre de la estación
@@ -145,7 +146,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
 
                         % VENTANEO
                        
-                        [Nvent, M, iv, fv, wincleantot, wincleanEW, wincleanNS, wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl,ptosvent, Nn, EW, NS, VE, dt, tSTA, tLTA, Smax, Smin );
+                        [Nventefec, M, iv, fv, wincleantot, wincleanEW, wincleanNS, wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl(tt), ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
 
                         %% Figuras para revisión 1
                         % plot_figura300(NS,EW,VE,dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
@@ -154,12 +155,11 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
 
                         % DIVISIÓN DE LA SEÑAL EN VENTANAS DE TIEMPO
 
-                        [ventok, EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(vecfechahms, M, ptosvent, iv, wincleantot, fv, EW, NS, VE);
+                        [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, Nventefec, Ndias, wincleantot, iv, fv);
 
                         % VENTANAS EFECTIVAS
-                        [Nv, EWv, NSv, VEv, fechahmsvent]=ventanas_efectivas(EWv, NSv, VEv, ventok, fechahmsvent, Nvent);
+                        [EWv, NSv, VEv, fechahmsvent]=ventanas_efectivas(ESTR, ptosvent, Nventefec, Ndias, wincleantot, iv, fv);
 
-                        if Nv == 0; continue; end
 
                         % REMUEVE LA MEDIA POR VENTANAS Y APLICA TAPER
                         [EWv, NSv, VEv] = remover_media_taper(EWv, NSv, VEv, ptosvent, factap);
