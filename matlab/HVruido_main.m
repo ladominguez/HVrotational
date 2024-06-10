@@ -20,7 +20,7 @@ factap = 0.01;
 % onebit: 1=SI, 0=NO
 
 % SELECCIONAR DATOS
-NdiasHV = 1;
+NdiasHV = 3;
 segvent = [500];         % Segundos de las ventanas para inversión
 porctrasl = [25];        % Porcentaje de traslape de las ventanas
 normalizac = [2 0];      % Normalización: [band,onebit]
@@ -131,14 +131,17 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
 
                 fprintf(1,'\t%d%s%d%s%d\n',Nteta,'/',length(tetarot),' --> teta=',teta);
 
-                %% ****************************************************
+                % *****************************************************
                 % CICLO LONGITUD DE VENTANAS
                 % *****************************************************
                 for vv = 1:length(segvent)
 
-                    [f, fin, ini, ptosvent, Nespec, df] = obtener_vector_de_frecuencia(segvent(vv), dt, dfnew, fmax);
+                    [f, fin, ini, ptosvent, Nespec, df] = obtener_vector_de_frecuencia(segvent(vv), ...
+                        dt, dfnew, fmax);
+
                     Nfrecred = fin-ini+1;
-                    %% ****************************************************
+
+                    % *****************************************************
                     % CICLO TRASLAPE DE VENTANAS
                     % *****************************************************
                     wincleantot = [];
@@ -146,25 +149,28 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
 
                         % VENTANEO
                        
-                        [Nventefec, M, iv, fv, wincleantot, wincleanEW, wincleanNS, wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl(tt), ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
+                        [Nventefec, M, iv, fv, wincleantot, wincleanEW, wincleanNS, ...
+                            wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl(tt), ...
+                            ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
 
-                        %% Figuras para revisión 1
+                        % % Figuras para revisión 1
                         % plot_figura300(NS,EW,VE,dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
                         % close(300)
                         % plot_figura201(dt, Smin, Smax, STALTAVE)
 
                         % DIVISIÓN DE LA SEÑAL EN VENTANAS DE TIEMPO
 
-                        [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, Nventefec, Ndias, wincleantot, iv, fv);
+                        [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, ...
+                            Nventefec, Ndias, wincleantot, iv, fv);
 
-                        % VENTANAS EFECTIVAS
-                        [EWv, NSv, VEv, fechahmsvent]=ventanas_efectivas(ESTR, ptosvent, Nventefec, Ndias, wincleantot, iv, fv);
+                        % % VENTANAS EFECTIVAS
+                        % [EWv, NSv, VEv, fechahmsvent] = ventanas_efectivas(ESTR, ptosvent, Nventefec, Ndias, wincleantot, iv, fv);
 
 
                         % REMUEVE LA MEDIA POR VENTANAS Y APLICA TAPER
                         [EWv, NSv, VEv] = remover_media_taper(EWv, NSv, VEv, ptosvent, factap);
 
-                        %% Figuras para revisión 2
+                        % % Figuras para revisión 2
                         % figure(201)
                         % t = (0:dt:(length(NS)-1)*dt).';
                         % d = find(wincleanVE~=0);
@@ -193,7 +199,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                         % set(lg,'location','northwest','fontname','Times New Roman','fontSize',14)
                         % % cla
 
-                        %% ****************************************************
+                        % *****************************************************
                         % CICLO DE NORMALIZACIÓN
                         % *****************************************************
                         for norm = 1:length(normalizac(:,1))
@@ -236,7 +242,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                             fEWventnorm = [];
                             fVEventnorm = [];
 
-                            %% ****************************************************
+                            % *****************************************************
                             % CICLO DE TIEMPOS PARA CÁLCULO DE H/V
                             % *****************************************************
                             for nh = 1:length(tiempoHV)
