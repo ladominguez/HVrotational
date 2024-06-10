@@ -4,8 +4,10 @@ format short
 %rutaarch = 'C:\Users\mbaen\POSDOC\MBR\RuidoGEOF\';
 %rutagrab = 'C:\Users\mbaen\POSDOC\MBR\RuidoGEOFmat\';
 
-rutaarch = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/data/';
-rutagrab = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/matlab/mat/';
+% rutaarch = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/data/';
+% rutagrab = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/matlab/mat/';
+
+cargar_rutas_locales_datos
 
 sep = obtener_separador_linux_window();
 
