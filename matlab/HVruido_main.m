@@ -20,11 +20,11 @@ factap = 0.01;
 % onebit: 1=SI, 0=NO
 
 % SELECCIONAR DATOS
-NdiasHV = 1;
+NdiasHV = 3;
 segvent = [500];         % Segundos de las ventanas para inversión
 porctrasl = [25];        % Porcentaje de traslape de las ventanas
 normalizac = [2 0];      % Normalización: [band,onebit]
-tiempoHV = [48*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
+tiempoHV = [24*NdiasHV*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
 ventaleatHV = 0;         % 1=ventanas aleatoria, 0=ventanas continuas
 NvBootstrap = 1;         % Número de ventanas para el boostrap
 tSTA = 1; %1.35;         % En segundos
