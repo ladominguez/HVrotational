@@ -20,7 +20,7 @@ factap = 0.01;
 % onebit: 1=SI, 0=NO
 
 % SELECCIONAR DATOS
-NdiasHV = 3;
+NdiasHV = 1;
 segvent = [500];         % Segundos de las ventanas para inversión
 porctrasl = [25];        % Porcentaje de traslape de las ventanas
 normalizac = [2 0];      % Normalización: [band,onebit]
@@ -90,7 +90,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
             % if exist(nombgrab0,'file') ~= 0; continue; end
 
             %[ESTR, vecfechahms] = leer_datos(rutaarch, estac, unidad, listreg, listdias{k});
-            [ESTR, dt] = leer_datos(rutaarch, estac, unidad, listreg, NdiasHV, inddia, w1new, w2new);
+            [ESTR, dt, w1, w2] = leer_datos(rutaarch, estac, unidad, listreg, NdiasHV, inddia, w1new, w2new);
             
             dt = ESTR.dt(1);
             fmax = 1/(2*dt);
@@ -241,7 +241,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                             % *****************************************************
                             for nh = 1:length(tiempoHV)
                                 iter = iter+1;
-                                fprintf(1,'\t%s%s%s%s%d%s%d\n',estac,'_',listdias{k},' --> iter ',iter,'/',itertot);
+                                fprintf(1,'\t%s%s%s%s%d%s%d\n',estac,'_',listdias{inddia},' --> iter ',iter,'/',itertot);
                                 suav = 0;   %0=no; 1=sí
 
                                 [HVtot,NVmean,EVmean,NventHV,vini, ...
@@ -267,8 +267,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
 
                                 if teta == 0 && iter == 1
                                     HV.estac = estac;
-                                    HV.paraadic.diajuliano = listdias{k};
-                                    HV.paraadic.fechahms = vecfechahms;
+                                    HV.paraadic.fechahms = ESTR.vecfechahms;
                                     HV.paraadic.ventaleatHV = ventaleatHV;
                                     HV.paraadic.NvBootstrap = NvBootstrap;
                                     HV.paraadic.tSTA = tSTA;
