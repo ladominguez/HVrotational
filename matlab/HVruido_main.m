@@ -204,11 +204,9 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                             nombcomb = nombre_combinac(senhal,unidad,band,w1,w2,onebit,segvent(vv),porctrasl(tt));
 
                             % NORMALIZACIÓN
-                            [fNSventnorm,fVEventnorm,fEWventnorm,~,~,~,~,~] = ...
-                                F_normalizacionfrec(NSv,VEv,EWv, ...
+                            [fNSventnorm,fVEventnorm,fEWventnorm,~,~,~,~,~] = F_normalizacionfrec(NSv,VEv,EWv, ...
                                 Nespec,band,onebit,dt,factap);
 
-                            % promNS_EW = abs((fNSventnorm+fEWventnorm)/2);
                             fNSvent = abs(fNSventnorm(ini:fin,:));
                             fEWvent = abs(fEWventnorm(ini:fin,:));
                             fVEvent = abs(fVEventnorm(ini:fin,:));
@@ -226,11 +224,9 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                                 fprintf(1,'\t%s%s%s%s%d%s%d\n',estac,'_',listdias{inddia},' --> iter ',iter,'/',itertot);
                                 suav = 0;   %0=no; 1=sí
 
-                                [HVtot,NVmean,EVmean,NventHV,vini, ...
-                                    tiempoHVnuevo,numHV,HVvent] = ...
-                                    F_HVruido(f,fNSvent,fEWvent,fVEvent, ...
-                                    fHHvent,segvent(vv),porctrasl(tt), ...
-                                    tiempoHV(nh),suav,ventaleatHV,NvBootstrap);
+                                % CÁLCULO DE H/V
+                                [HVtot,NVmean,EVmean,NventHV,vini,tiempoHVnuevo,numHV,HVvent] = F_HVruido(f,fNSvent,fEWvent, ...
+                                    fVEvent,fHHvent,segvent(vv),porctrasl(tt),tiempoHV(nh),suav,ventaleatHV,NvBootstrap);
 
                                 tiempoHVnuevo_str = num2str(round(tiempoHVnuevo*100)/100);
                                 clavecomb = ['CD-HV',tiempoHVnuevo_str,'hr','-',nombcomb,'-Nw',num2str(NventHV(1)),'-NwBS',num2str(numHV)];
@@ -280,7 +276,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
 
                 %% Figura
                 if teta == 0
-                    h = figure(201);
+                    h = figure(ee);
                     for ic = 1:length(HV.clavecomb)
                         % HVmeansmooth = suavmatr(HV.HVmean_comb{ic},HV.fcomb{ic},0,24); %length(HV.HVmean_comb{ic})*0.1
                         semilogx(HV.fcomb{ic},HV.HVmean_comb{ic},'linewidth',1.5); hold on; grid on
