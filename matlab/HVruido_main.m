@@ -20,11 +20,11 @@ factap = 0.01;
 % onebit: 1=SI, 0=NO
 
 % SELECCIONAR DATOS
-NdiasHV = 1;
+NdiasHV = 3;
 segvent = [500];         % Segundos de las ventanas para inversión
 porctrasl = [25];        % Porcentaje de traslape de las ventanas
 normalizac = [2 0];      % Normalización: [band,onebit]
-tiempoHV = [48*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
+tiempoHV = [24*NdiasHV*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
 ventaleatHV = 0;         % 1=ventanas aleatoria, 0=ventanas continuas
 NvBootstrap = 1;         % Número de ventanas para el boostrap
 tSTA = 1; %1.35;         % En segundos
@@ -49,9 +49,7 @@ buscar = {'TOME'};        % ¡¡¡ESCOGER ESTACIÓN!!!
 %% Invierte la escala de colores,se puede comentar
 col = get_colors(itertot);
 
-
-%%
-
+%% Ciclo principal
 % tetarot = 0:45:180;
 tetarot = 0;
 [~,Nbuscar] = ismember(buscar,listest);
@@ -127,18 +125,21 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                 Nv = 0;
 
                 % Rotación sismogramas
-                [ESTR teta] = rotar_sismogramas(ESTR, tetarot( Nteta), Ndias );
+                [ESTR,teta] = rotar_sismogramas(ESTR, tetarot( Nteta), Ndias);
 
                 fprintf(1,'\t%d%s%d%s%d\n',Nteta,'/',length(tetarot),' --> teta=',teta);
 
-                %% ****************************************************
+                % *****************************************************
                 % CICLO LONGITUD DE VENTANAS
                 % *****************************************************
                 for vv = 1:length(segvent)
 
-                    [f, fin, ini, ptosvent, Nespec, df] = obtener_vector_de_frecuencia(segvent(vv), dt, dfnew, fmax);
+                    [f, fin, ini, ptosvent, Nespec, df] = obtener_vector_de_frecuencia(segvent(vv), ...
+                        dt, dfnew, fmax);
+
                     Nfrecred = fin-ini+1;
-                    %% ****************************************************
+
+                    % *****************************************************
                     % CICLO TRASLAPE DE VENTANAS
                     % *****************************************************
                     wincleantot = [];
@@ -146,25 +147,23 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
 
                         % VENTANEO
                        
-                        [Nventefec, M, iv, fv, wincleantot, wincleanEW, wincleanNS, wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl(tt), ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
+                        [Nventefec, M, iv, fv, wincleantot, wincleanEW, wincleanNS, ...
+                            wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl(tt), ...
+                            ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
 
-                        %% Figuras para revisión 1
+                        % % Figuras para revisión 1
                         % plot_figura300(NS,EW,VE,dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
                         % close(300)
                         % plot_figura201(dt, Smin, Smax, STALTAVE)
 
                         % DIVISIÓN DE LA SEÑAL EN VENTANAS DE TIEMPO
-
-                        [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, Nventefec, Ndias, wincleantot, iv, fv);
-
-                        % VENTANAS EFECTIVAS
-                        [EWv, NSv, VEv, fechahmsvent]=ventanas_efectivas(ESTR, ptosvent, Nventefec, Ndias, wincleantot, iv, fv);
-
+                        [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, ...
+                            Nventefec, Ndias, wincleantot, iv, fv);
 
                         % REMUEVE LA MEDIA POR VENTANAS Y APLICA TAPER
                         [EWv, NSv, VEv] = remover_media_taper(EWv, NSv, VEv, ptosvent, factap);
 
-                        %% Figuras para revisión 2
+                        % % Figuras para revisión 2
                         % figure(201)
                         % t = (0:dt:(length(NS)-1)*dt).';
                         % d = find(wincleanVE~=0);
@@ -193,7 +192,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                         % set(lg,'location','northwest','fontname','Times New Roman','fontSize',14)
                         % % cla
 
-                        %% ****************************************************
+                        % *****************************************************
                         % CICLO DE NORMALIZACIÓN
                         % *****************************************************
                         for norm = 1:length(normalizac(:,1))
@@ -201,32 +200,13 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                             onebit = normalizac(norm,2);
 
                             % Carpeta y archivo para grabar resultados
-                            nombcomb = [senhal,'-',unidad,'-','filt',num2str(w1),'to',num2str(w2), ...
-                                'Hz-band',num2str(band),'-onebit',num2str(onebit),'-tv', ...
-                                num2str(round(segvent(vv)*10000)/10000), ...
-                                's-Overlap',num2str(porctrasl(tt)),'%'];
-                            nombcomb = strrep(nombcomb,' ','');
-                            nombcomb = strrep(nombcomb,'-onebit0','');
-                            nombcomb = strrep(nombcomb,'onebit1','1bit');
-                            nombcomb = strrep(nombcomb,'band0','raw');
-                            nombcomb = strrep(nombcomb,'band1','Eunit');
-                            nombcomb = strrep(nombcomb,'band2','SW3dir');
-                            nombcomb = strrep(nombcomb,'band3','SW');
-                            % % ---------
-                            % carpeta = [rutagrab,estac];
-                            % % if ~exist(carpeta,'dir'); mkdir(carpeta); end
-                            % nombarch = [carpeta,'\',estac,'-',nombcomb,'.mat'];
-                            % nombarch = strrep(nombarch,'-','_');
-                            % nombarch = strrep(nombarch,'%','trasl');
-                            % % if exist(nombarch,'file') ~= 0; continue; end
-                            % % ----------------------------------------
+
+                            nombcomb = nombre_combinac(senhal,unidad,band,w1,w2,onebit,segvent(vv),porctrasl(tt));
 
                             % NORMALIZACIÓN
-                            [fNSventnorm,fVEventnorm,fEWventnorm,~,~,~,~,~] = ...
-                                F_normalizacionfrec(NSv,VEv,EWv, ...
+                            [fNSventnorm,fVEventnorm,fEWventnorm,~,~,~,~,~] = F_normalizacionfrec(NSv,VEv,EWv, ...
                                 Nespec,band,onebit,dt,factap);
 
-                            % promNS_EW = abs((fNSventnorm+fEWventnorm)/2);
                             fNSvent = abs(fNSventnorm(ini:fin,:));
                             fEWvent = abs(fEWventnorm(ini:fin,:));
                             fVEvent = abs(fVEventnorm(ini:fin,:));
@@ -236,7 +216,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                             fEWventnorm = [];
                             fVEventnorm = [];
 
-                            %% ****************************************************
+                            % *****************************************************
                             % CICLO DE TIEMPOS PARA CÁLCULO DE H/V
                             % *****************************************************
                             for nh = 1:length(tiempoHV)
@@ -244,11 +224,9 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                                 fprintf(1,'\t%s%s%s%s%d%s%d\n',estac,'_',listdias{inddia},' --> iter ',iter,'/',itertot);
                                 suav = 0;   %0=no; 1=sí
 
-                                [HVtot,NVmean,EVmean,NventHV,vini, ...
-                                    tiempoHVnuevo,numHV,HVvent] = ...
-                                    F_HVruido(f,fNSvent,fEWvent,fVEvent, ...
-                                    fHHvent,segvent(vv),porctrasl(tt), ...
-                                    tiempoHV(nh),suav,ventaleatHV,NvBootstrap);
+                                % CÁLCULO DE H/V
+                                [HVtot,NVmean,EVmean,NventHV,vini,tiempoHVnuevo,numHV,HVvent] = F_HVruido(f,fNSvent,fEWvent, ...
+                                    fVEvent,fHHvent,segvent(vv),porctrasl(tt),tiempoHV(nh),suav,ventaleatHV,NvBootstrap);
 
                                 tiempoHVnuevo_str = num2str(round(tiempoHVnuevo*100)/100);
                                 clavecomb = ['CD-HV',tiempoHVnuevo_str,'hr','-',nombcomb,'-Nw',num2str(NventHV(1)),'-NwBS',num2str(numHV)];
@@ -298,7 +276,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
 
                 %% Figura
                 if teta == 0
-                    h = figure(201);
+                    h = figure(ee);
                     for ic = 1:length(HV.clavecomb)
                         % HVmeansmooth = suavmatr(HV.HVmean_comb{ic},HV.fcomb{ic},0,24); %length(HV.HVmean_comb{ic})*0.1
                         semilogx(HV.fcomb{ic},HV.HVmean_comb{ic},'linewidth',1.5); hold on; grid on
