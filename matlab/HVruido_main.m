@@ -24,7 +24,7 @@ NdiasHV = 3;
 segvent = [500];         % Segundos de las ventanas para inversión
 porctrasl = [25];        % Porcentaje de traslape de las ventanas
 normalizac = [2 0];      % Normalización: [band,onebit]
-tiempoHV = [48*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
+tiempoHV = [24*NdiasHV*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
 ventaleatHV = 0;         % 1=ventanas aleatoria, 0=ventanas continuas
 NvBootstrap = 1;         % Número de ventanas para el boostrap
 tSTA = 1; %1.35;         % En segundos
@@ -125,7 +125,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                 Nv = 0;
 
                 % Rotación sismogramas
-                [ESTR teta] = rotar_sismogramas(ESTR, tetarot( Nteta), Ndias );
+                [ESTR,teta] = rotar_sismogramas(ESTR, tetarot( Nteta), Ndias);
 
                 fprintf(1,'\t%d%s%d%s%d\n',Nteta,'/',length(tetarot),' --> teta=',teta);
 
@@ -157,13 +157,8 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                         % plot_figura201(dt, Smin, Smax, STALTAVE)
 
                         % DIVISIÓN DE LA SEÑAL EN VENTANAS DE TIEMPO
-
                         [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, ...
                             Nventefec, Ndias, wincleantot, iv, fv);
-
-                        % % VENTANAS EFECTIVAS
-                        % [EWv, NSv, VEv, fechahmsvent] = ventanas_efectivas(ESTR, ptosvent, Nventefec, Ndias, wincleantot, iv, fv);
-
 
                         % REMUEVE LA MEDIA POR VENTANAS Y APLICA TAPER
                         [EWv, NSv, VEv] = remover_media_taper(EWv, NSv, VEv, ptosvent, factap);
