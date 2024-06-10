@@ -20,7 +20,7 @@ factap = 0.01;
 % onebit: 1=SI, 0=NO
 
 % SELECCIONAR DATOS
-NdiasHV = 1;
+NdiasHV = 3;
 segvent = [500];         % Segundos de las ventanas para inversión
 porctrasl = [25];        % Porcentaje de traslape de las ventanas
 normalizac = [2 0];      % Normalización: [band,onebit]
