@@ -49,9 +49,7 @@ buscar = {'TOME'};        % ¡¡¡ESCOGER ESTACIÓN!!!
 %% Invierte la escala de colores,se puede comentar
 col = get_colors(itertot);
 
-
-%%
-
+%% Ciclo principal
 % tetarot = 0:45:180;
 tetarot = 0;
 [~,Nbuscar] = ismember(buscar,listest);
