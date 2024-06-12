@@ -151,8 +151,8 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                             ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
 
                         % Figuras para revisión
-                        plot_figura300(ESTR,dt,winclean,iv,fv, Smax, STALTA)
-                        plot_figura201(dt, Smin, Smax, STALTA)
+                        % plot_figura300(ESTR,dt,winclean,iv,fv, Smax, STALTA)
+                        plot_figura201(ESTR, dt, Smin, Smax, winclean, STALTA, iv, fv)
 
                         % DIVISIÓN DE LA SEÑAL EN VENTANAS DE TIEMPO
                         [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, ...
@@ -160,35 +160,6 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
 
                         % REMUEVE LA MEDIA POR VENTANAS Y APLICA TAPER
                         [EWv, NSv, VEv] = remover_media_taper(EWv, NSv, VEv, ptosvent, factap);
-
-                        % % Figuras para revisión 2
-                        % figure(201)
-                        % t = (0:dt:(length(NS)-1)*dt).';
-                        % d = find(winclean.VE~=0);
-                        % ml = max([max(abs(NS)) max(abs(EW)) max(abs(VE))]);
-                        % 
-                        % subplot(2,1,2)
-                        % plot(t,VEm,'k'); hold on %; grid on
-                        % ylabel('Velocity (cm/s)','fontname','Times New Roman','fontSize',14)
-                        % xlabel('Time (s)','fontname','Times New Roman','fontSize',14)
-                        % ylim([-max(abs(VEm)) max(abs(VEm))])
-                        % set(gca,'fontname','Times New Roman','fontSize',14)
-                        % for q = d.'
-                        %     if q == d(1)
-                        %         yampl = 5*max([max(abs(NSm(iv(q):fv(q)))) ...
-                        %             max(abs(EWm(iv(q):fv(q)))) max(abs(VEm(iv(q):fv(q))))]);
-                        %     end
-                        %     fill([t(iv(q)),t(fv(q)),t(fv(q)),t(iv(q)),t(iv(q))], ...
-                        %         [-yampl,-yampl,yampl,yampl,-yampl],'b','edgecolor','r','facealpha',0.3) ; hold on
-                        % end
-                        % xlim([0 t(end)])
-                        % ylim([-yampl yampl])
-                        % set(gcf,'color','white')
-                        % h1 = plot(0,0,'k');
-                        % h2 = fill([0,0,0,0,0],[0,0,0,0,0],'b','edgecolor','r','facealpha',0.1);
-                        % lg = legend([h1 h2],'Corrected signals','Windows selected');
-                        % set(lg,'location','northwest','fontname','Times New Roman','fontSize',14)
-                        % % cla
 
                         % *****************************************************
                         % CICLO DE NORMALIZACIÓN
