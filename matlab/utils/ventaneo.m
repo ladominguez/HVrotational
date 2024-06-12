@@ -36,7 +36,7 @@ function [Nventefec, M, iv, fv, winclean, STALTA] = ventaneo(porctrasl, ptosvent
 
     % ELIMINA LAS VENTANAS MÁS ENERGÉTICAS DE LA SEÑAL EN SEGUNDOS
 
-    winclean.tot = {};
+    winclean = [];
     if Smax == 0
         for p = 1:Ndias
             winclean.tot{p} = ones(length(iv{p}),1);
