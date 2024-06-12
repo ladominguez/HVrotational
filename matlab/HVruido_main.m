@@ -150,10 +150,9 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                         [Nventefec, M, iv, fv, winclean, STALTA] = ventaneo(porctrasl(tt), ...
                             ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
 
-                        % % Figuras para revisión 1
-                        % plot_figura300(NS,EW,VE,dt,winclean.tot,iv,fv, Smax, STALTA)
-                        % close(300)
-                        % plot_figura201(dt, Smin, Smax, STALTA.VE)
+                        % Figuras para revisión
+                        plot_figura300(ESTR,dt,winclean,iv,fv, Smax, STALTA)
+                        plot_figura201(dt, Smin, Smax, STALTA)
 
                         % DIVISIÓN DE LA SEÑAL EN VENTANAS DE TIEMPO
                         [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, ...
