@@ -1,4 +1,4 @@
-function [Nventefec, M, iv, fv, wincleantot, wincleanEW, wincleanNS, wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl, ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias)
+function [Nventefec, M, iv, fv, winclean, STALTA] = ventaneo(porctrasl, ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias)
 
     Ntras = floor(porctrasl/100*ptosvent);
     iv = {};
@@ -36,19 +36,19 @@ function [Nventefec, M, iv, fv, wincleantot, wincleanEW, wincleanNS, wincleanVE,
 
     % ELIMINA LAS VENTANAS MÁS ENERGÉTICAS DE LA SEÑAL EN SEGUNDOS
 
-    wincleantot = {};
+    winclean.tot = {};
     if Smax == 0
         for p = 1:Ndias
-            wincleantot{p} = ones(length(iv{p}),1);
+            winclean.tot{p} = ones(length(iv{p}),1);
         end
     else
         Nventefec = 0;
         for p = 1:Ndias
-            [wincleanEW{p},STALTAEW{p}] = picossig6(ESTR.EWrot{p},dt,iv{p},fv{p},tSTA,tLTA,Smax,Smin);
-            [wincleanNS{p},STALTANS{p}] = picossig6(ESTR.NSrot{p},dt,iv{p},fv{p},tSTA,tLTA,Smax,Smin);
-            [wincleanVE{p},STALTAVE{p}] = picossig6(ESTR.VE{p},dt,iv{p},fv{p},tSTA,tLTA,Smax,Smin);
-            wincleantot{p} = wincleanEW{p}.*wincleanNS{p}.*wincleanVE{p};
-            Nventefec = Nventefec+sum(wincleantot{p});
+            [winclean.EW{p},STALTA.EW{p}] = picossig6(ESTR.EWrot{p},dt,iv{p},fv{p},tSTA,tLTA,Smax,Smin);
+            [winclean.NS{p},STALTA.NS{p}] = picossig6(ESTR.NSrot{p},dt,iv{p},fv{p},tSTA,tLTA,Smax,Smin);
+            [winclean.VE{p},STALTA.VE{p}] = picossig6(ESTR.VE{p},dt,iv{p},fv{p},tSTA,tLTA,Smax,Smin);
+            winclean.tot{p} = winclean.EW{p}.*winclean.NS{p}.*winclean.VE{p};
+            Nventefec = Nventefec+sum(winclean.tot{p});
         end
     end
 

@@ -142,23 +142,22 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                     % *****************************************************
                     % CICLO TRASLAPE DE VENTANAS
                     % *****************************************************
-                    wincleantot = [];
+                    clearvars winclean
                     for tt = 1:length(porctrasl)
 
                         % VENTANEO
                        
-                        [Nventefec, M, iv, fv, wincleantot, wincleanEW, wincleanNS, ...
-                            wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl(tt), ...
+                        [Nventefec, M, iv, fv, winclean, STALTA] = ventaneo(porctrasl(tt), ...
                             ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
 
                         % % Figuras para revisión 1
-                        % plot_figura300(NS,EW,VE,dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
+                        % plot_figura300(NS,EW,VE,dt,winclean.tot,iv,fv, Smax, STALTA)
                         % close(300)
-                        % plot_figura201(dt, Smin, Smax, STALTAVE)
+                        % plot_figura201(dt, Smin, Smax, STALTA.VE)
 
                         % DIVISIÓN DE LA SEÑAL EN VENTANAS DE TIEMPO
                         [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, ...
-                            Nventefec, Ndias, wincleantot, iv, fv);
+                            Nventefec, Ndias, winclean.tot, iv, fv);
 
                         % REMUEVE LA MEDIA POR VENTANAS Y APLICA TAPER
                         [EWv, NSv, VEv] = remover_media_taper(EWv, NSv, VEv, ptosvent, factap);
@@ -166,7 +165,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                         % % Figuras para revisión 2
                         % figure(201)
                         % t = (0:dt:(length(NS)-1)*dt).';
-                        % d = find(wincleanVE~=0);
+                        % d = find(winclean.VE~=0);
                         % ml = max([max(abs(NS)) max(abs(EW)) max(abs(VE))]);
                         % 
                         % subplot(2,1,2)

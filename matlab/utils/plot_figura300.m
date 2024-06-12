@@ -1,4 +1,4 @@
-function plot_figura300(NS,EW,VE,dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
+function plot_figura300(NS,EW,VE,dt,wincleantot,iv,fv, Smax, STALTA)
 
 figure(300)
 set(gcf,'Position',get(0,'Screensize'))
@@ -8,7 +8,7 @@ t = (0:dt:(length(NS)-1)*dt).';
 
 % Figuras con los cocientes STA/LTA de cada dirección
 nexttile(1)
-plot(t,STALTANS,'k'); hold on; grid on
+plot(t,STALTA.NS,'k'); hold on; grid on
 line([t(1) t(end)],[Smax Smax],'color','r','linestyle','--','linewidth',2)
 set(gca,'YTick',0:1:3)
 set(gca,'XTickLabel',[])
@@ -17,7 +17,7 @@ ylim([0 11])
 set(gca,'fontname','Times New Roman','fontSize',14)
 
 nexttile(3)
-plot(t,STALTAEW,'k'); hold on; grid on
+plot(t,STALTA.EW,'k'); hold on; grid on
 line([t(1) t(end)],[Smax Smax],'color','r','linestyle','--','linewidth',2)
 set(gca,'YTick',0:1:3)
 set(gca,'XTickLabel',[])
@@ -26,7 +26,7 @@ ylim([0 11])
 set(gca,'fontname','Times New Roman','fontSize',14)
 
 nexttile(5)
-plot(t,STALTAVE,'k'); hold on; grid on
+plot(t,STALTA.VE,'k'); hold on; grid on
 line([t(1) t(end)],[Smax Smax],'color','r','linestyle','--','linewidth',2)
 set(gca,'YTick',0:1:3)
 ylabel('VE','fontname','Times New Roman','fontSize',14)
