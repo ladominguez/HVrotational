@@ -7,3 +7,4 @@ matlab/mat
 **/*.swp
 tmp0
 matlab/cargar_rutas_locales.m
+matlab/cargar_rutas_locales_datos.m
