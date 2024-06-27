@@ -31,7 +31,7 @@ senhal = 'Ruido';
 tiporeg = 'velo'; %acel; velo
 
 % Filtro inicial de las señales en bruto
-w1 = 0.05;
+w1 = 0.01;
 w2 = 49.9;
 
 % Factor de esquina para taper de señales
@@ -40,9 +40,9 @@ factap = 0.0;
 % Elegir nuevo dt
 dt = 0.01;
 
-%% SELECCIONAR ESTACIONES
-% buscar = {'TOME'};    %¡¡¡ESCOGER ESTACIÓN!!!
-buscar = listest;
+%% S
+buscar = {'NARA'};    %¡¡¡ESCOGER ESTACIÓN!!!%
+%buscar = listest;
 
 %%
 if ~exist(rutagrab,'dir'); mkdir(rutagrab); end
