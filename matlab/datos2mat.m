@@ -1,4 +1,4 @@
-clear
+ clear
 format short
 
 %rutaarch = 'C:\Users\mbaen\POSDOC\MBR\RuidoGEOF\';

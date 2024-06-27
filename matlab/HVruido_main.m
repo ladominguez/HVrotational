@@ -2,7 +2,7 @@ clear; clc
 format short
 
 cargar_rutas_locales
-% addpath('utils')
+%addpath('utils')
 
 %% DATOS INICIALES
 senhal = 'noise';
@@ -44,7 +44,7 @@ bal = find(ismember(listest,[{'.'};{'..'}])==1);
 listest(bal) = [];
 
 buscar = listest;
-buscar = {'TOME'};        % ¡¡¡ESCOGER ESTACIÓN!!!
+buscar = {'NARA'};        % ¡¡¡ESCOGER ESTACIÓN!!!
 
 %% Invierte la escala de colores,se puede comentar
 col = get_colors(itertot);
@@ -75,13 +75,18 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
         % buscardia = {'20200929';'20200116';'20201129'};
         % [~,Nbuscardia] = ismember(buscardia,listdias);
 
+        
         diaini = (1:NdiasHV:length(listdias)).';
+
+        if diaini(end) + NdiasHV -1 > numel(listdias)
+            diaini(end) = [];
+        end
 
         leyenda = [];
         % Loop por cada día
         %for dd = 1:length(Nbuscardia)
         for dd = 1:length(diaini)
-
+                
             inddia = diaini(dd);
             %k = Nbuscardia(dd);
             nombgrab0 = [nombgrab,'_',listdias{inddia},'.mat'];
@@ -190,7 +195,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                         % h2 = fill([0,0,0,0,0],[0,0,0,0,0],'b','edgecolor','r','facealpha',0.1);
                         % lg = legend([h1 h2],'Corrected signals','Windows selected');
                         % set(lg,'location','northwest','fontname','Times New Roman','fontSize',14)
-                        % % cla
+                        % cla
 
                         % *****************************************************
                         % CICLO DE NORMALIZACIÓN

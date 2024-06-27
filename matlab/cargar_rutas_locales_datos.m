@@ -1,2 +1,2 @@
-rutaarch = 'C:\Users\mbaen\POSDOC\MBR\RuidoGEOF\';
-rutagrab = 'C:\Users\mbaen\POSDOC\MBR\RuidoGEOFmat\';
+rutaarch = 'C:\Users\cynth\Desktop\ProyectoHV\datos\';
+rutagrab = 'C:\Users\cynth\Desktop\ProyectoHV\datosmat\';
