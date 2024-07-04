@@ -44,7 +44,7 @@ bal = find(ismember(listest,[{'.'};{'..'}])==1);
 listest(bal) = [];
 
 buscar = listest;
-buscar = {'NARA'};        % ¡¡¡ESCOGER ESTACIÓN!!!
+buscar = {'TOME'};        % ¡¡¡ESCOGER ESTACIÓN!!!
 
 %% Invierte la escala de colores,se puede comentar
 col = get_colors(itertot);
@@ -212,10 +212,7 @@ for aleat = 1 %:10   % se removio este ciclo en la siguiente versión
                             [fNSventnorm,fVEventnorm,fEWventnorm,~,~,~,~,~] = F_normalizacionfrec(NSv,VEv,EWv, ...
                                 Nespec,band,onebit,dt,factap);
 
-                            fNSvent = abs(fNSventnorm(ini:fin,:));
-                            fEWvent = abs(fEWventnorm(ini:fin,:));
-                            fVEvent = abs(fVEventnorm(ini:fin,:));
-                            fHHvent = abs(sqrt((fNSventnorm(ini:fin,:).^2+fEWventnorm(ini:fin,:).^2)/2));
+                            [fNSvent, fEWvent, fVEvent, fHHvent]= obtener_valores_absolutos(fNSventnorm,fEWventnorm, fVEventnorm, ini, fin);
 
                             fNSventnorm = [];
                             fEWventnorm = [];
