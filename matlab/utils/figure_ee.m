@@ -1,6 +1,6 @@
 function [h, leyenda] = figure_ee(ee, f, HV, leyenda, estacion)
     h = figure(ee);
-    N = length(HV.clavecomb)
+    N = length(HV.clavecomb);
     for ic = 1:N
         % HVmeansmooth = suavmatr(HV.HVmean_comb{ic},HV.fcomb{ic},0,24); %length(HV.HVmean_comb{ic})*0.1
         semilogx(HV.fcomb{ic},HV.HVmean_comb{ic},'linewidth',1.5); hold on; grid on
