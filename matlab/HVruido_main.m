@@ -2,7 +2,7 @@ clear; clc
 format short
 
 cargar_rutas_locales
-%addpath('utils')
+addpath('utils')
 
 %% DATOS INICIALES
 senhal = 'noise';
@@ -51,9 +51,8 @@ col = get_colors(itertot);
 
 %% Ciclo principal
 % tetarot = 0:45:180;
-tetarot = 0;
+tetarot = 0:5:180;
 [~,Nbuscar] = ismember(buscar,listest);
-
 
 % Ciclo para estaciones
 for ee = 1:length(buscar)
@@ -222,7 +221,7 @@ for ee = 1:length(buscar)
                         % *****************************************************
                         for nh = 1:length(tiempoHV)
                             iter = iter+1;
-                            fprintf(1,'\t%s%s%s%s%d%s%d\n',estac,'_',listdias{inddia},' --> iter ',iter,'/',itertot);
+                            % fprintf(1,'\t%s%s%s%s%d%s%d\n',estac,'_',listdias{inddia},' --> iter ',iter,'/',itertot);
                             suav = 0;   %0=no; 1=sí
 
                             % CÁLCULO DE H/V
