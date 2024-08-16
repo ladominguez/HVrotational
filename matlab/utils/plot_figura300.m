@@ -2,7 +2,7 @@ function plot_figura300(ESTR, Ndias, dt,wincleantot,iv,fv, Smax, STALTANS, STALT
 
 for p = 1:Ndias
     figure(300);
-    set(gcf,'Position',get(0,'Screensize'))
+    set(gcf,'Position',get(0,'Screensize'));
     fig = tiledlayout(3,2,'TileSpacing','tight','Padding','tight');
 
     t = (0:dt:(length(ESTR.EWrot{p})-1)*dt).';
@@ -15,7 +15,7 @@ for p = 1:Ndias
     ylabel('NS','fontname','Times New Roman','fontSize',14)
     xlim([t(1) t(end)])
     ylim([0 11])
-    set(gca,'fontname','Times New Roman','fontSize',14)
+    set(gca,'fontname','Times New Roman','fontSize',14);
 
     nexttile(3)
     plot(t,STALTAEW{p},'k'); hold on; grid on
@@ -25,7 +25,7 @@ for p = 1:Ndias
     ylabel('EW','fontname','Times New Roman','fontSize',14)
     xlim([t(1) t(end)])
     ylim([0 11])
-    set(gca,'fontname','Times New Roman','fontSize',14)
+    set(gca,'fontname','Times New Roman','fontSize',14);
 
     nexttile(5)
     plot(t,STALTAVE{p},'k'); hold on; grid on
@@ -35,7 +35,7 @@ for p = 1:Ndias
     xlabel('Time (s)','fontname','Times New Roman','fontSize',14)
     xlim([t(1) t(end)])
     ylim([0 11])
-    set(gca,'fontname','Times New Roman','fontSize',14)
+    set(gca,'fontname','Times New Roman','fontSize',14);
     h1 = plot(0,0,'k');
     h2 = plot(0,0,'--r','linewidth',2);
     % lg = legend([h1 h2],'STA/LTA',['(STA/LTA)max = ',num2str(Smax)]);
@@ -93,6 +93,6 @@ for p = 1:Ndias
 
         set(gcf,'color','white')
     end
-    sum(wincleantot{p})
+    % maybe display sum(wincleantot{p})
     
 end
