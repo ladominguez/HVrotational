@@ -93,6 +93,7 @@ for p = 1:Ndias
 
         set(gcf,'color','white')
     end
-    % maybe display sum(wincleantot{p})
     
+    % maybe display sum(wincleantot{p})
+    pause()
 end
