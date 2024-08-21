@@ -1,6 +1,6 @@
 
 %function [ESTR, vecfechahms] = leer_datos(rutaarch, estac, unidad, listreg, listdias)
-function [ESTR, dt, w1, w2] = leer_datos(rutaarch, estac, unidad, listreg, NdiasHV, inddia, w1new, w2new)
+function [ESTR, w1, w2] = leer_datos(rutaarch, estac, unidad, listreg, NdiasHV, inddia, w1new, w2new)
         sep = obtener_separador_linux_window();
         ESTR = [];
         for i = 1:NdiasHV
