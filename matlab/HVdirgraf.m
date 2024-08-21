@@ -175,8 +175,9 @@ for k = 1:length(buscar)
     % title([num2str(tetavec(Nteta)),' deg'],'fontname','Times New Roman','fontSize',11)
     xlabel('Frequency, $f$ (Hz)','fontname','Times New Roman','fontsize',14,'interpreter','latex')
     ylabel('$H/V$ amplitude','fontname','Times New Roman','fontsize',14,'interpreter','latex')
-    text(fgrab(Nfmax),1,['$f = ',num2str((round(fgrab(Nfmax)*100)/100)),'$ Hz'],'fontname','Times New Roman','fontsize',14,'interpreter','latex')
-    text(fgrab(Nfmax),0.5,['\gamma = ',num2str((round(gamamax(end)*10000)/10000)*100),'%'],'fontname','Times New Roman','fontsize',14)
+    texto = [{['f = ',num2str((round(fgrab(Nfmax)*100)/100)),' Hz']}, ...
+        {['γ = ',num2str((round(gamamax(end)*10000)/10000)*100),'%']}];
+    text(fgrab(Nfmax),1,texto,'fontname','Times New Roman','fontsize',14)
 %     if k == 1 || k == 2
         % text(0.2,1.5,['\gamma = ',num2str((round(gamamax(end)*10000)/10000)*100),'%'],'fontname','Times New Roman','fontsize',14)
 %     end

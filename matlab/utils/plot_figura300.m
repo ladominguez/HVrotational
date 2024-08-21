@@ -97,4 +97,7 @@ for q = 1:length(wincleantot)
         % lg = legend([h1 h2],'Corrected signals','Windows selected');
         % set(lg,'location','south outside','fontname','Times New Roman','fontSize',14)
     end
+    
+    % maybe display sum(wincleantot{p})
+    pause()
 end

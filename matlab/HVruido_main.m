@@ -155,7 +155,7 @@ for ee = 1:length(buscar)
                         ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
 
                     % % Figuras para revisión 1
-                    % plot_figura300(NS,EW,VE,dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
+                    % plot_figura300(ESTR, Ndias, dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
                     % close(300)
                     % plot_figura201(dt, Smin, Smax, STALTAVE)
 
