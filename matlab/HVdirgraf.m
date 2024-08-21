@@ -48,9 +48,10 @@ for k = 1:length(buscar)
     listreg = strrep(listreg,'.mat','');
 
     load(fullfile(rutagrab,estac,listreg{1}));
-    tablaHVNS = HV.HVNSdir_comb1;
-    tablaHVEW = HV.HVEWdir_comb1;
     tetavec = HV.tetarot;
+    ind90 = (length(tetavec)+1)/2;
+    HVdir = HV.HVdir_comb1;
+    HVdircont = HV.HVdir_comb1([ind90:end,2:ind90],:);
     fgrab = HV.f_comb1;
     HVmeangrab = HV.HVtot_comb1;
 
@@ -78,13 +79,13 @@ for k = 1:length(buscar)
 
     if fgrab(Nf1) < flim1; Nf1 = Nflim1; end
     if fgrab(Nf2) > flim2; Nf2 = Nflim2; end
-    gamanumerador = abs((tablaHVNS(:,Nf1:Nf2))-(tablaHVEW(:,Nf1:Nf2)));
+    gamanumerador = abs((HVdir(:,Nf1:Nf2))-(HVdircont(:,Nf1:Nf2)));
     gamadenominador = zeros(length(tetavec),Nf2-Nf1+1);
     cont = 0;
     for kk = Nf1:Nf2
         cont = cont+1;
         for gg = 1:length(tetavec)
-            bal = min([tablaHVNS(gg,kk),tablaHVEW(gg,kk)]);
+            bal = min([HVdir(gg,kk),HVdircont(gg,kk)]);
             gamadenominador(gg,cont) = bal;
         end
     end
@@ -101,10 +102,10 @@ for k = 1:length(buscar)
     Norden = Norden(end-1:end);
     gamamax = gama(Ntetamax0(Norden));
     gamamaxlista = [gamamaxlista;gamamax(end)];
-%     [~,bal] = max(tablaHVEW(Ntetamax0(Norden),Nf1:Nf2));
+%     [~,bal] = max(HVdircont(Ntetamax0(Norden),Nf1:Nf2));
 %     Nteta = Ntetamax0(Norden(bal));
-    [~,bal1] = max(tablaHVEW(:,Nf1:Nf2));
-    [~,bal2] = max(max(tablaHVEW(:,Nf1:Nf2)));
+    [~,bal1] = max(HVdircont(:,Nf1:Nf2));
+    [~,bal2] = max(max(HVdircont(:,Nf1:Nf2)));
     Nteta = bal1(bal2);
     
     [gamamin0,Ntetamin0] = minimos(gama,2);
@@ -138,7 +139,7 @@ for k = 1:length(buscar)
 %     end
     
     nexttile
-    HVSRdib = tablaHVEW;
+    HVSRdib = HVdircont;
     contourf(fgrab(Nflim1graf:Nflim2graf),tetavec,HVSRdib(:,Nflim1graf:Nflim2graf),'linecolor','none'); shading interp
     line([flim1graf flim2graf],[90 90],'color','k')
     view([0 0 1])
@@ -165,8 +166,8 @@ for k = 1:length(buscar)
     % for iii = 1:length(tetavec)
     %     Nteta = iii;
     semilogx(fgrab(Nflim1graf:Nflim2graf),HVmeangrab(Nflim1graf:Nflim2graf),'k','linewidth',2); hold on
-    semilogx(fgrab(Nflim1graf:Nflim2graf),tablaHVEW(Nteta,Nflim1graf:Nflim2graf),'r','linewidth',2); hold on
-    semilogx(fgrab(Nflim1graf:Nflim2graf),tablaHVNS(Nteta,Nflim1graf:Nflim2graf),'--b','linewidth',2); hold on
+    semilogx(fgrab(Nflim1graf:Nflim2graf),HVdircont(Nteta,Nflim1graf:Nflim2graf),'r','linewidth',2); hold on
+    semilogx(fgrab(Nflim1graf:Nflim2graf),HVdir(Nteta,Nflim1graf:Nflim2graf),'--b','linewidth',2); hold on
     limy = max(HVmeangrab(Nflim1graf:Nflim2graf));
     fill(fgrab([Nf1,Nf2,Nf2,Nf1,Nf1]),[0,0,limy,limy,0],colfill,'facealpha',0.2); hold on
     xlim([flim1graf flim2graf])

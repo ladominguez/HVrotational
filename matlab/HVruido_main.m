@@ -21,7 +21,7 @@ factap = 0.01;
 
 % SELECCIONAR DATOS
 NdiasHV = 3;
-segvent = [500];         % Segundos de las ventanas para inversión
+segvent = [200];         % Segundos de las ventanas para inversión
 porctrasl = [25];        % Porcentaje de traslape de las ventanas
 normalizac = [2 0];      % Normalización: [band,onebit]
 tiempoHV = [24*NdiasHV*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
@@ -29,7 +29,7 @@ ventaleatHV = 0;         % 1=ventanas aleatoria, 0=ventanas continuas
 NvBootstrap = 1;         % Número de ventanas para el boostrap
 tSTA = 1; %1.35;         % En segundos
 tLTA = 60;               % En segundos
-Smax = 5;                % 0=todas las ventanas
+Smax = 3;                % 0=todas las ventanas
 Smin = 0.2;
 dfnew = 1;
 
@@ -52,9 +52,14 @@ col = get_colors(itertot);
 %% Ciclo principal
 % tetarot = 0:45:180;
 tetarot = 0:5:180;
-[~,Nbuscar] = ismember(buscar,listest);
+
+if length(tetarot) > 1 && isempty(find(tetarot==90))
+    fprintf(1,'%s\n','tetarot debe contener el ángulo 90°');
+    return
+end
 
 % Ciclo para estaciones
+[~,Nbuscar] = ismember(buscar,listest);
 for ee = 1:length(buscar)
     estac = listest{Nbuscar(ee)};
     fprintf(1,'%d%s%d%s%s\n',ee,'/',length(buscar),' --> ',estac);
@@ -62,10 +67,8 @@ for ee = 1:length(buscar)
     crear_directorios(rutagrab, estac)
     nombgrab = [rutagrab,estac,[separador 'HV_'],estac];
 
-
     listreg = dir(fullfile(rutaarch,estac,unidad,'*.mat'));
     listreg = {listreg.name}'; %name
-
 
     listdias = obtener_lista_dias(listreg);
 
@@ -73,7 +76,6 @@ for ee = 1:length(buscar)
     % buscardia = {'20200929';'20200116';'20201129'};
     % [~,Nbuscardia] = ismember(buscardia,listdias);
 
-    
     diaini = (1:NdiasHV:length(listdias)).';
 
     if diaini(end) + NdiasHV -1 > numel(listdias)
@@ -83,7 +85,7 @@ for ee = 1:length(buscar)
     leyenda = [];
     % Loop por cada día
     %for dd = 1:length(Nbuscardia)
-    for dd = 1:length(diaini)
+    for dd = 1 %:length(diaini)
             
         inddia = diaini(dd);
         %k = Nbuscardia(dd);
@@ -91,7 +93,7 @@ for ee = 1:length(buscar)
         % if exist(nombgrab0,'file') ~= 0; continue; end
 
         %[ESTR, vecfechahms] = leer_datos(rutaarch, estac, unidad, listreg, listdias{k});
-        [ESTR, dt, w1, w2] = leer_datos(rutaarch, estac, unidad, listreg, NdiasHV, inddia, w1new, w2new);
+        [ESTR, w1, w2] = leer_datos(rutaarch, estac, unidad, listreg, NdiasHV, inddia, w1new, w2new);
         
         dt = ESTR.dt(1);
         fmax = 1/(2*dt);
@@ -111,16 +113,14 @@ for ee = 1:length(buscar)
         % tiempoHV_real_min: tiempo real empleado para el cálculo del H/V
         % f_comb1: vector de frecuencias de la combinación de parámetros 1
         % HVtot_comb1: H/V de la combinación de parámetros 1
-        % HVNSdir_comb1: H/V direccional norte-sur empleando la combinación de parámetros 1
-        % HVEWdir_comb1: H/V direccional este-oeste empleando la combinación de parámetros 1
+        % HVdir_comb1: H/V direccional norte-sur empleando la combinación de parámetros 1
         % tetarot: vector de ángulos de rotación para el H/V direccional
 
         HV = struct('estac',[],'paraadic',[],'clavecomb',[],'Nvent',[],'fcomb',[],'HVmean_comb',[],'NVmean_comb',[],'EVmean_comb',[], ...
             'tiempoHV_orig_min',[],'tiempoHV_real_min',[], ...
-            'f_comb1',[],'HVtot_comb1',[],'HVNSdir_comb1',[],'HVEWdir_comb1',[],'tetarot',[]);
+            'f_comb1',[],'HVtot_comb1',[],'HVdir_comb1',[],'tetarot',[]);
 
-        HV.HVNSdir_comb1 = [];
-        HV.HVEWdir_comb1 = [];
+        HV.HVdir_comb1 = [];
 
         for Nteta = 1:length(tetarot)
             iter = 0;
@@ -263,8 +263,7 @@ for ee = 1:length(buscar)
                             end
 
                             if iter == 1
-                                HV.HVNSdir_comb1 = [HV.HVNSdir_comb1;NVmean.'];
-                                HV.HVEWdir_comb1 = [HV.HVEWdir_comb1;EVmean.'];
+                                HV.HVdir_comb1 = [HV.HVdir_comb1;NVmean.'];
                             end
                         end
                         NSv = [];
@@ -286,7 +285,7 @@ for ee = 1:length(buscar)
         save(nombgrab0,'HV','-v7.3');
 
         % % Figura HV direccional
-        % contourf(HV.fcomb{1},HV.tetarot,HV.HVNSdir_comb1); shading interp
+        % contourf(HV.fcomb{1},HV.tetarot,HV.HVdir_comb1); shading interp
         % xlabel('Frecuencia (Hz)','fontname','Liberation Serif','fontSize',12)
         % ylabel('Ángulo de rotación (deg)','fontname','Liberation Serif','fontSize',12)
         % view([0 0 1])
