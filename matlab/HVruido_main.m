@@ -8,43 +8,43 @@ addpath('utils')
 senhal = 'noise';
 unidad = 'velo';  % DESP VELO ACEL
 
-% Filtro inicial de las seÒales
+% Filtro inicial de las se√±ales
 w1new = 0; %1;     0=s/filtro
 w2new = 0; %255.9; 0=s/filtro
 
-% Factor de esquina para taper de seÒales
+% Factor de esquina para taper de se√±ales
 factap = 0.01;
 
-% *****NORMALIZACI”N*****
+% *****NORMALIZACI√ìN*****
 % band:   0=ninguna, 2=suma3direcc, 3=SW
 % onebit: 1=SI, 0=NO
 
 % SELECCIONAR DATOS
 NdiasHV = 3;
-segvent = [200];         % Segundos de las ventanas para inversiÛn
+segvent = [200];         % Segundos de las ventanas para inversi√≥n
 porctrasl = [25];        % Porcentaje de traslape de las ventanas
-normalizac = [2 0];      % NormalizaciÛn: [band,onebit]
-tiempoHV = [24*NdiasHV*60];      % Tiempo (minutos) para c·lculo de cada H/V (Tiempo de registro manipulable)
+normalizac = [2 0];      % Normalizaci√≥n: [band,onebit]
+tiempoHV = [24*NdiasHV*60];      % Tiempo (minutos) para c√°lculo de cada H/V (Tiempo de registro manipulable)
 ventaleatHV = 0;         % 1=ventanas aleatoria, 0=ventanas continuas
-NvBootstrap = 1;         % N˙mero de ventanas para el boostrap
+NvBootstrap = 1;         % N√∫mero de ventanas para el boostrap
 tSTA = 1; %1.35;         % En segundos
 tLTA = 60;               % En segundos
 Smax = 3;                % 0=todas las ventanas
 Smin = 0.2;
 dfnew = 1;
 
-% Si baja el tLTA es m·s conservador
+% Si baja el tLTA es m√°s conservador
 itertot = length(segvent)*length(porctrasl)*length(normalizac(:,1))*length(tiempoHV);
 separador = obtener_separador_linux_window();
 
-%% Buscar estaciÛn
+%% Buscar estaci√≥n
 listest = dir(fullfile(rutaarch));
 listest = {listest.name}';
 bal = find(ismember(listest,[{'.'};{'..'}])==1);
 listest(bal) = [];
 
 buscar = listest;
-buscar = {'TOME'};        % °°°ESCOGER ESTACI”N!!!
+buscar = {'TOME'};        % ¬°¬°¬°ESCOGER ESTACI√ìN!!!
 
 %% Invierte la escala de colores,se puede comentar
 col = get_colors(itertot);
@@ -54,7 +54,7 @@ col = get_colors(itertot);
 tetarot = 0:5:180;
 
 if length(tetarot) > 1 && isempty(find(tetarot==90))
-    fprintf(1,'%s\n','tetarot debe contener el ·ngulo 90∞');
+    fprintf(1,'%s\n','tetarot debe contener el √°ngulo 90¬∞');
     return
 end
 
@@ -83,7 +83,7 @@ for ee = 1:length(buscar)
     end
 
     leyenda = [];
-    % Loop por cada dÌa
+    % Loop por cada d√≠a
     %for dd = 1:length(Nbuscardia)
     for dd = 1 %:length(diaini)
             
@@ -101,20 +101,20 @@ for ee = 1:length(buscar)
         [~,Ndias] = size(ESTR.EW);
         f0 = [];
 
-        % estac: nombre de la estaciÛn
-        % paraadic: par·metros adicionales (fechas, n˙mero de ventanas para H/V, par·metros para STA/LTA, df)
-        % clavecomb: clave de cada combinaciÛn de par·metros
-        % Nvent: n˙mero de ventanas empleadas para el H/V
+        % estac: nombre de la estaci√≥n
+        % paraadic: par√°metros adicionales (fechas, n√∫mero de ventanas para H/V, par√°metros para STA/LTA, df)
+        % clavecomb: clave de cada combinaci√≥n de par√°metros
+        % Nvent: n√∫mero de ventanas empleadas para el H/V
         % fcomb: vector de frecuencias
-        % HVmean_comb: matriz con el H/V medio de cada combinaciÛn de par·metros (por columna)
-        % NVmean_comb: matriz con el H/V de cada combinaciÛn de par·metros, usando solo la componente norte-sur (por columna)
-        % EVmean_comb: matriz con el H/V de cada combinaciÛn de par·metros, usando solo la componente este-oeste (por columna)
-        % tiempoHV_orig_min: tiempo solicitado para el c·lculo del H/V
-        % tiempoHV_real_min: tiempo real empleado para el c·lculo del H/V
-        % f_comb1: vector de frecuencias de la combinaciÛn de par·metros 1
-        % HVtot_comb1: H/V de la combinaciÛn de par·metros 1
-        % HVdir_comb1: H/V direccional norte-sur empleando la combinaciÛn de par·metros 1
-        % tetarot: vector de ·ngulos de rotaciÛn para el H/V direccional
+        % HVmean_comb: matriz con el H/V medio de cada combinaci√≥n de par√°metros (por columna)
+        % NVmean_comb: matriz con el H/V de cada combinaci√≥n de par√°metros, usando solo la componente norte-sur (por columna)
+        % EVmean_comb: matriz con el H/V de cada combinaci√≥n de par√°metros, usando solo la componente este-oeste (por columna)
+        % tiempoHV_orig_min: tiempo solicitado para el c√°lculo del H/V
+        % tiempoHV_real_min: tiempo real empleado para el c√°lculo del H/V
+        % f_comb1: vector de frecuencias de la combinaci√≥n de par√°metros 1
+        % HVtot_comb1: H/V de la combinaci√≥n de par√°metros 1
+        % HVdir_comb1: H/V direccional norte-sur empleando la combinaci√≥n de par√°metros 1
+        % tetarot: vector de √°ngulos de rotaci√≥n para el H/V direccional
 
         HV = struct('estac',[],'paraadic',[],'clavecomb',[],'Nvent',[],'fcomb',[],'HVmean_comb',[],'NVmean_comb',[],'EVmean_comb',[], ...
             'tiempoHV_orig_min',[],'tiempoHV_real_min',[], ...
@@ -127,7 +127,7 @@ for ee = 1:length(buscar)
             ccd = 0;
             Nv = 0;
 
-            % RotaciÛn sismogramas
+            % Rotaci√≥n sismogramas
             [ESTR,teta] = rotar_sismogramas(ESTR, tetarot( Nteta), Ndias);
 
             fprintf(1,'\t%d%s%d%s%d\n',Nteta,'/',length(tetarot),' --> teta=',teta);
@@ -154,19 +154,19 @@ for ee = 1:length(buscar)
                         wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl(tt), ...
                         ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
 
-                    % % Figuras para revisiÛn 1
+                    % % Figuras para revisi√≥n 1
                     % plot_figura300(ESTR, Ndias, dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
                     % close(300)
                     % plot_figura201(dt, Smin, Smax, STALTAVE)
 
-                    % DIVISI”N DE LA SE—AL EN VENTANAS DE TIEMPO
+                    % DIVISI√ìN DE LA SE√ëAL EN VENTANAS DE TIEMPO
                     [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, ...
                         Nventefec, Ndias, wincleantot, iv, fv);
 
                     % REMUEVE LA MEDIA POR VENTANAS Y APLICA TAPER
                     [EWv, NSv, VEv] = remover_media_taper(EWv, NSv, VEv, ptosvent, factap);
 
-                    % % Figuras para revisiÛn 2
+                    % % Figuras para revisi√≥n 2
                     % figure(201)
                     % t = (0:dt:(length(NS)-1)*dt).';
                     % d = find(wincleanVE~=0);
@@ -196,7 +196,7 @@ for ee = 1:length(buscar)
                     % cla
 
                     % *****************************************************
-                    % CICLO DE NORMALIZACI”N
+                    % CICLO DE NORMALIZACI√ìN
                     % *****************************************************
                     for norm = 1:length(normalizac(:,1))
                         band = normalizac(norm,1);
@@ -206,7 +206,7 @@ for ee = 1:length(buscar)
 
                         nombcomb = nombre_combinac(senhal,unidad,band,w1,w2,onebit,segvent(vv),porctrasl(tt));
 
-                        % NORMALIZACI”N
+                        % NORMALIZACI√ìN
                         [fNSventnorm,fVEventnorm,fEWventnorm,~,~,~,~,~] = F_normalizacionfrec(NSv,VEv,EWv, ...
                             Nespec,band,onebit,dt,factap);
 
@@ -217,14 +217,14 @@ for ee = 1:length(buscar)
                         fVEventnorm = [];
 
                         % *****************************************************
-                        % CICLO DE TIEMPOS PARA C¡LCULO DE H/V
+                        % CICLO DE TIEMPOS PARA C√ÅLCULO DE H/V
                         % *****************************************************
                         for nh = 1:length(tiempoHV)
                             iter = iter+1;
                             % fprintf(1,'\t%s%s%s%s%d%s%d\n',estac,'_',listdias{inddia},' --> iter ',iter,'/',itertot);
-                            suav = 0;   %0=no; 1=sÌ
+                            suav = 0;   %0=no; 1=s√≠
 
-                            % C¡LCULO DE H/V
+                            % C√ÅLCULO DE H/V
                             [HVtot,NVmean,EVmean,NventHV,vini,tiempoHVnuevo,numHV,HVvent] = F_HVruido(f,fNSvent,fEWvent, ...
                                 fVEvent,fHHvent,segvent(vv),porctrasl(tt),tiempoHV(nh),suav,ventaleatHV,NvBootstrap);
 
@@ -287,7 +287,7 @@ for ee = 1:length(buscar)
         % % Figura HV direccional
         % contourf(HV.fcomb{1},HV.tetarot,HV.HVdir_comb1); shading interp
         % xlabel('Frecuencia (Hz)','fontname','Liberation Serif','fontSize',12)
-        % ylabel('¡ngulo de rotaciÛn (deg)','fontname','Liberation Serif','fontSize',12)
+        % ylabel('√Ångulo de rotaci√≥n (deg)','fontname','Liberation Serif','fontSize',12)
         % view([0 0 1])
         % xlim([0.01 HV.fcomb{1}(end)])
         % ylim([0 180])
