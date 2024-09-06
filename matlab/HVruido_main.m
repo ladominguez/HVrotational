@@ -155,9 +155,10 @@ for ee = 1:length(buscar)
                         ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
 
                     % % Figuras para revisión 1
-                    % plot_figura300(ESTR, Ndias, dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
+                    %plot_figura300(ESTR, Ndias, dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
+
                     % close(300)
-                    % plot_figura201(dt, Smin, Smax, STALTAVE)
+                    %plot_figura201(dt, Smin, Smax, STALTAVE)
 
                     % DIVISIÓN DE LA SEÑAL EN VENTANAS DE TIEMPO
                     [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, ...
@@ -271,10 +272,11 @@ for ee = 1:length(buscar)
                         EWv = [];
                     end
                 end
-            end
+            end 
 
             %% Figura
             if teta == 0
+                
                 [h, leyenda] = figure_ee(ee, f, HV, leyenda, estac);
                 drawnow
 

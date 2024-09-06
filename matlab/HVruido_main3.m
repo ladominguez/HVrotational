@@ -4,6 +4,9 @@ format short
 rutaarch = 'C:\Users\mbaen\POSDOC\MBR\RuidoGEOFmat\';
 rutagrab = 'C:\Users\mbaen\POSDOC\MBR\HVRuidoGEOF\';
 
+rutaarch = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/matlab/mat/';
+rutagrab = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/matlab/';
+
 listest = dir(fullfile(rutaarch));
 listest = {listest.name}';
 bal = find(ismember(listest,[{'.'};{'..'}])==1);
@@ -97,7 +100,7 @@ for ee = 1:length(buscar)
         ESTR = [];
         for i = 1:NdiasHV
             Nreg = inddia+(i-1);
-            REG = load([rutaarch,estac,'\',unidad,'\',listreg{Nreg}]);
+            REG = load([rutaarch,estac,'/',unidad,'/',listreg{Nreg}]);
             ESTR.EW{i} = double(REG.EW);
             ESTR.NS{i} = double(REG.NS);
             ESTR.VE{i} = double(REG.VE);
