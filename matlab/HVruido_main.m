@@ -284,6 +284,19 @@ for ee = 1:length(buscar)
         end
         save(nombgrab0,'HV','-v7.3');
 
+        % HVmeansmooth = suavmatr(HVCD.HVmean_comb{1},HVCD.fcomb{1},0,3);
+        % i1 = find(frec>=0.02,1,'first');
+        % i2 = find(frec>=1.6,1,'first');
+        % HVesc = HVmeansmooth(i1:40:i2);
+        % fsesc = HVCD.fcomb{1}(i1:40:i2);
+        % figure(400)
+        % semilogx(HVCD.fcomb{1},HVCD.HVmean_comb{1},'b','linewidth',2); hold on
+        % semilogx(HVCD.fcomb{1},HVmeansmooth,'g','linewidth',2); hold on
+        % semilogx(fsesc,HVesc,'r','linewidth',2); hold on
+        % saveas(gcf,[rutagrab,'trazas\HV_',estac,'.png']);
+        % close(400)
+        % dlmwrite([rutagrab,'HV-',estac,'.txt'],[fsesc,HVesc],'delimiter','\t','precision','%14.8f') %,'precision','%20.8f'
+
         % % Figura HV direccional
         % contourf(HV.fcomb{1},HV.tetarot,HV.HVdir_comb1); shading interp
         % xlabel('Frecuencia (Hz)','fontname','Liberation Serif','fontSize',12)
