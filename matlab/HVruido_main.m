@@ -211,10 +211,6 @@ for ee = 1:length(buscar)
                         % NORMALIZACIÓN
                         [fNSventnorm,fVEventnorm,fEWventnorm,~,~,~,~,~] = F_normalizacionfrec(NSv,VEv,EWv, ...
                             Nespec,band,onebit,dt,factap);
-
-                        % fNSventnorm = multiplicar_funcion_transferencia(fNSventnorm,f);
-                        % fEWventnorm = multiplicar_funcion_transferencia(fEWventnorm,f);
-                        % fVEventnorm = multiplicar_funcion_transferencia(fVEventnorm,f);
                         
                         [fNSvent, fEWvent, fVEvent, fHHvent]= obtener_valores_absolutos(fNSventnorm,fEWventnorm, fVEventnorm, ini, fin);
 
@@ -234,9 +230,9 @@ for ee = 1:length(buscar)
                             [HVtot,NVmean,EVmean,NventHV,vini,tiempoHVnuevo,numHV,HVvent] = F_HVruido(f,fNSvent,fEWvent, ...
                                 fVEvent,fHHvent,segvent(vv),porctrasl(tt),tiempoHV(nh),suav,ventaleatHV,NvBootstrap);
 
-                            % HVtot = multiplicar_funcion_transferencia(HVtot,f);
-                            % NVmean = multiplicar_funcion_transferencia(NVmean,f);
-                            % EVmean = multiplicar_funcion_transferencia(EVmean,f);
+                            HVtot = multiplicar_funcion_transferencia(HVtot,f);
+                            NVmean = multiplicar_funcion_transferencia(NVmean,f);
+                            EVmean = multiplicar_funcion_transferencia(EVmean,f);
 
                             tiempoHVnuevo_str = num2str(round(tiempoHVnuevo*100)/100);
                             clavecomb = ['CD-HV',tiempoHVnuevo_str,'hr','-',nombcomb,'-Nw',num2str(NventHV(1)),'-NwBS',num2str(numHV)];
