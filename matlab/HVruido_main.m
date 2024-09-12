@@ -44,14 +44,14 @@ bal = find(ismember(listest,[{'.'};{'..'}])==1);
 listest(bal) = [];
 
 buscar = listest;
-buscar = {'TOME'};        % ¡¡¡ESCOGER ESTACIÓN!!!
+buscar = {'04_BARA'};        % ¡¡¡ESCOGER ESTACIÓN!!!
 
 %% Invierte la escala de colores,se puede comentar
 col = get_colors(itertot);
 
 %% Ciclo principal
 % tetarot = 0:45:180;
-tetarot = 0:5:180;
+tetarot = 0; %:5:180;
 
 if length(tetarot) > 1 && isempty(find(tetarot==90))
     fprintf(1,'%s\n','tetarot debe contener el ángulo 90°');
@@ -280,22 +280,17 @@ for ee = 1:length(buscar)
 
                 % print(gcf,nombgrab0(1:end-4),'-dpng','-r600')
                 % close(h)
+
+                % Generación de archivo de texto para inversión
+                f1 = 0.001;
+                f2 = 1;
+                paso = 3;
+                fs = 6;
+                [HVesc,fsesc] = archivo_inversion(HV.HVmean_comb{1},HV.fcomb{1},f1,f2,paso,fs);
+                dlmwrite([rutagrab,'HV-',estac,'.txt'],[fsesc,HVesc],'delimiter','\t','precision','%14.8f')
             end
         end
         save(nombgrab0,'HV','-v7.3');
-
-        % HVmeansmooth = suavmatr(HVCD.HVmean_comb{1},HVCD.fcomb{1},0,3);
-        % i1 = find(frec>=0.02,1,'first');
-        % i2 = find(frec>=1.6,1,'first');
-        % HVesc = HVmeansmooth(i1:40:i2);
-        % fsesc = HVCD.fcomb{1}(i1:40:i2);
-        % figure(400)
-        % semilogx(HVCD.fcomb{1},HVCD.HVmean_comb{1},'b','linewidth',2); hold on
-        % semilogx(HVCD.fcomb{1},HVmeansmooth,'g','linewidth',2); hold on
-        % semilogx(fsesc,HVesc,'r','linewidth',2); hold on
-        % saveas(gcf,[rutagrab,'trazas\HV_',estac,'.png']);
-        % close(400)
-        % dlmwrite([rutagrab,'HV-',estac,'.txt'],[fsesc,HVesc],'delimiter','\t','precision','%14.8f') %,'precision','%20.8f'
 
         % % Figura HV direccional
         % contourf(HV.fcomb{1},HV.tetarot,HV.HVdir_comb1); shading interp
