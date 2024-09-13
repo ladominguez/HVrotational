@@ -8,6 +8,7 @@ format short
 % rutagrab = '/Users/antonio/Dropbox/Geofisica/Research/HVrotational/matlab/mat/';
 
 cargar_rutas_locales_datos
+addpath('utils')
 
 sep = obtener_separador_linux_window();
 

@@ -1,4 +1,4 @@
-	function H_corrected = multiplicar_funcion_transferencia(H_original, freq, estac, fecha)
+function H_corrected = multiplicar_funcion_transferencia(H_original, freq, estac, fecha)
 
 	% 
 
@@ -78,5 +78,7 @@
         end
 
 	H_transferencia = abs(H_transferencia)/max(abs(H_transferencia));
-	H_corrected = H_original.*H_transferencia;
 
+    for i = 1:size(H_original,2)
+        H_corrected(:,i) = H_original(:,i).*H_transferencia;
+    end
