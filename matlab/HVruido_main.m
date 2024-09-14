@@ -31,7 +31,7 @@ tSTA = 1; %1.35;         % En segundos
 tLTA = 60;               % En segundos
 Smax = 3;                % 0=todas las ventanas
 Smin = 0.2;
-dfnew = 1;
+dfnew = 0.001;
 
 % Si baja el tLTA es más conservador
 itertot = length(segvent)*length(porctrasl)*length(normalizac(:,1))*length(tiempoHV);
@@ -51,7 +51,7 @@ col = get_colors(itertot);
 
 %% Ciclo principal
 % tetarot = 0:45:180;
-tetarot = 0; %:5:180;
+tetarot = 0;
 
 if length(tetarot) > 1 && isempty(find(tetarot==90))
     fprintf(1,'%s\n','tetarot debe contener el ángulo 90°');
@@ -155,9 +155,10 @@ for ee = 1:length(buscar)
                         ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
 
                     % % Figuras para revisión 1
-                    % plot_figura300(ESTR, Ndias, dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
+                    %plot_figura300(ESTR, Ndias, dt,wincleantot,iv,fv, Smax, STALTANS, STALTAEW, STALTAVE)
+
                     % close(300)
-                    % plot_figura201(dt, Smin, Smax, STALTAVE)
+                    %plot_figura201(dt, Smin, Smax, STALTAVE)
 
                     % DIVISIÓN DE LA SEÑAL EN VENTANAS DE TIEMPO
                     [EWv, NSv, VEv, fechahmsvent ] = division_ventanas_tiempo(ESTR, ptosvent, ...
@@ -209,7 +210,7 @@ for ee = 1:length(buscar)
                         % NORMALIZACIÓN
                         [fNSventnorm,fVEventnorm,fEWventnorm,~,~,~,~,~] = F_normalizacionfrec(NSv,VEv,EWv, ...
                             Nespec,band,onebit,dt,factap);
-
+                        
                         [fNSvent, fEWvent, fVEvent, fHHvent]= obtener_valores_absolutos(fNSventnorm,fEWventnorm, fVEventnorm, ini, fin);
 
                         fNSventnorm = [];
@@ -227,6 +228,10 @@ for ee = 1:length(buscar)
                             % CÁLCULO DE H/V
                             [HVtot,NVmean,EVmean,NventHV,vini,tiempoHVnuevo,numHV,HVvent] = F_HVruido(f,fNSvent,fEWvent, ...
                                 fVEvent,fHHvent,segvent(vv),porctrasl(tt),tiempoHV(nh),suav,ventaleatHV,NvBootstrap);
+
+                            HVtot = multiplicar_funcion_transferencia(HVtot,f);
+                            NVmean = multiplicar_funcion_transferencia(NVmean,f);
+                            EVmean = multiplicar_funcion_transferencia(EVmean,f);
 
                             tiempoHVnuevo_str = num2str(round(tiempoHVnuevo*100)/100);
                             clavecomb = ['CD-HV',tiempoHVnuevo_str,'hr','-',nombcomb,'-Nw',num2str(NventHV(1)),'-NwBS',num2str(numHV)];
@@ -271,10 +276,11 @@ for ee = 1:length(buscar)
                         EWv = [];
                     end
                 end
-            end
+            end 
 
             %% Figura
             if teta == 0
+                
                 [h, leyenda] = figure_ee(ee, f, HV, leyenda, estac);
                 drawnow
 
@@ -290,7 +296,7 @@ for ee = 1:length(buscar)
                 dlmwrite([rutagrab,'HV-',estac,'.txt'],[fsesc,HVesc],'delimiter','\t','precision','%14.8f')
             end
         end
-        save(nombgrab0,'HV','-v7.3');
+        % save(nombgrab0,'HV','-v7.3');
 
         % % Figura HV direccional
         % contourf(HV.fcomb{1},HV.tetarot,HV.HVdir_comb1); shading interp

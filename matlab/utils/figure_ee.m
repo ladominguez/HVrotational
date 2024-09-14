@@ -3,7 +3,11 @@ function [h, leyenda] = figure_ee(ee, f, HV, leyenda, estacion)
     N = length(HV.clavecomb);
     for ic = 1:N
         % HVmeansmooth = suavmatr(HV.HVmean_comb{ic},HV.fcomb{ic},0,24); %length(HV.HVmean_comb{ic})*0.1
-        semilogx(HV.fcomb{ic},HV.HVmean_comb{ic},'linewidth',1.5); hold on; grid on
+        semilogx(HV.fcomb{ic},HV.HVmean_comb{ic},'linewidth',1.5); 
+        hold on
+        grid on
+
+
         % plot(HV.fcomb{ic},HVmeansmooth,'linewidth',1.5); hold on %,'color',col(ic,:) hold on; grid on
         % semilogx(HV.fcomb{ic},HV.NVmean_comb{ic},'linewidth',1.5); hold on; grid on
         % semilogx(HV.fcomb{ic},HV.EVmean_comb{ic},'linewidth',1.5); hold on; grid on

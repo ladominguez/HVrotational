@@ -1,2 +1,2 @@
-rutaarch = 'C:\Users\cynth\Desktop\ProyectoHV\datos\';
-rutagrab = 'C:\Users\cynth\Desktop\ProyectoHV\datosmat\';
+rutaarch = '/home/mbaenar/SynologyDrive/RuidoGEOF/';
+rutagrab = '/home/mbaenar/SynologyDrive/RuidoGEOFmat/';
