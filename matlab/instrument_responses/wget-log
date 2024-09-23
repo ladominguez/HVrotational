@@ -1,0 +1,11 @@
+--2024-09-18 19:40:00--  http://service.iris.edu/irisws/nrl/1/combine?instconfig=sensor_REFTEK_RT151B_LP120_SG2000_STgroundVel
+Resolving service.iris.edu (service.iris.edu)... 128.95.166.47
+Connecting to service.iris.edu (service.iris.edu)|128.95.166.47|:80... connected.
+HTTP request sent, awaiting response... 200 
+Length: 3358 (3.3K) [application/xml]
+Saving to: ‘combine?instconfig=sensor_REFTEK_RT151B_LP120_SG2000_STgroundVel’
+
+                     combine?instconfig=s   0%[                                                                                    ]       0  --.-KB/s               combine?instconfig=sensor_REFTEK_RT151B_L 100%[===================================================================================>]   3.28K  --.-KB/s    in 0s      
+
+2024-09-18 19:40:00 (229 MB/s) - ‘combine?instconfig=sensor_REFTEK_RT151B_LP120_SG2000_STgroundVel’ saved [3358/3358]
+
