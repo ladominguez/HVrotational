@@ -45,7 +45,7 @@ bal = find(ismember(listest,[{'.'};{'..'}])==1);
 listest(bal) = [];
 
 buscar = listest;
-buscar = {'TOME'};        % ¡¡¡ESCOGER ESTACIÓN!!!
+buscar = {'06_TOME'};        % ¡¡¡ESCOGER ESTACIÓN!!!
 
 %% Invierte la escala de colores,se puede comentar
 col = get_colors(itertot);
