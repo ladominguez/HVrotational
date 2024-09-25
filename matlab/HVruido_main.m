@@ -27,7 +27,7 @@ porctrasl = [25];        % Porcentaje de traslape de las ventanas
 normalizac = [2 0];      % Normalización: [band,onebit]
 tiempoHV = [24*NdiasHV*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
 ventaleatHV = 0;         % 1=ventanas aleatoria, 0=ventanas continuas
-NvBootstrap = 200;         % Número de ventanas para el boostrap
+NvBootstrap = 1;         % Número de ventanas para el boostrap
 tSTA = 1; %1.35;         % En segundos
 tLTA = 60;               % En segundos
 Smax = 3;                % 0=todas las ventanas
@@ -282,8 +282,8 @@ for ee = 1:length(buscar)
             %% Figura
             if teta == 0
                 
-                %[h, leyenda] = figure_ee(ee, f, HV, leyenda, estac);
-                %drawnow
+                [h, leyenda] = figure_ee(ee, f, HV, leyenda, estac);
+                drawnow
 
                 % print(gcf,nombgrab0(1:end-4),'-dpng','-r600')
                 % close(h)
