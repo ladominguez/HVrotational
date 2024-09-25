@@ -1,6 +1,6 @@
 function SIGsuav = suavfrec(SIG,f,fs)
 df = f(2)-f(1);
-[Nf,~] = size(SIG);
+[Nf,Nv] = size(SIG);
 
 porc1 = 2^(-1/(2*fs));
 porc2 = 2^(+1/(2*fs));
@@ -12,8 +12,8 @@ fini(fini>Nf) = Nf;
 ffin(ffin<1) = 1;
 ffin(ffin>Nf) = Nf;
 
-Nv = ffin-fini+1;
-SIGsuav = zeros(Nf,1);
+Ndat = ffin-fini+1;
+SIGsuav = zeros(Nf,Nv);
 for i = 1:Nf
-    SIGsuav(i) = sqrt(sum(SIG(fini(i):ffin(i)).^2,1)/Nv(i));
+    SIGsuav(i,:) = sqrt(sum(SIG(fini(i):ffin(i),:).^2,1)./Ndat(i));
 end

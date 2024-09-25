@@ -66,3 +66,16 @@ end
 HVmean = mean(HVvent,2);
 NVmean = mean(NVvent,2);
 EVmean = mean(EVvent,2);
+
+% HVventNK = zeros(N,Nv);
+% for i = 1:numHV
+%     vec = vi(i):vf(i);
+%     HVventNK = ((fNSvent2(:,vec)+fEWvent2(:,vec))./fVEvent2(:,vec)).^0.5;
+% end
+% for i = 1:Nv
+%     HVventNK(:,i) = smooth(HVventNK(:,i),length(f)*0.1);
+% end
+% 
+% HVmeanNK = mean(HVventNK,2);
+% HVstdNK = std(HVventNK.');
+% HVstdNK = suavfrec(HVstdNK,f,6);
