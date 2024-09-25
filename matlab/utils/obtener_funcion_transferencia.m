@@ -16,7 +16,7 @@ function H_transferencia = obtener_funcion_transferencia(freq, station)
 
 s = 1j * freq * 2 * pi;
 
-if strcmp(station, 'AZUL') || strcmp(station, 'TAHU') || strcmp(station, 'LAPA')
+if contains(station, 'AZUL') || contains(station, 'TAHU') || contains(station, 'LAPA')
     % TODO - Sillicon Audio
     A0 = 9.52654e7;
     Gain = 0.50986;
@@ -30,7 +30,7 @@ if strcmp(station, 'AZUL') || strcmp(station, 'TAHU') || strcmp(station, 'LAPA')
     p4 = -1.25664E+04;
     H_transferencia = A0*s.*(s-z2)./((s-p1).*(s-p2).*(s-p3).*(s-p4));
 
-elseif strcmp(station, 'NARA') || strcmp(station, 'CRIS')
+elseif contains(station, 'NARA') || contains(station, 'CRIS')
     % TODO - Guralp 40T
     A0 = 2304000
     K = 2*400
@@ -45,7 +45,7 @@ elseif strcmp(station, 'NARA') || strcmp(station, 'CRIS')
     p5 = -180;
     H_transferencia = A0*s.^2./((s-p1).*(s-p2).*(s-p3).*(s-p4).*(s-p5));
 
-elseif strcmp(station, 'BARA') || strcmp(station, 'TOME') || strcmp(station,'HUIR') || strcmp(station,'CONE')
+elseif contains(station, 'BARA') || contains(station, 'TOME') || contains(station,'HUIR') || contains(station,'CONE')
     % Reftek 151B
     A0 = 63165;
     K  = 2000; %V/m/s (differential output)
@@ -62,7 +62,7 @@ elseif strcmp(station, 'BARA') || strcmp(station, 'TOME') || strcmp(station,'HUI
     c3 = 355.38;
     c4 = 63165;
     H_transferencia = A0*s.^2./((s.^2 + c1*s + c2).*(s.^2 + c3*s + c4));
-elseif strcmp(station,'PURU')
+elseif contains(station,'PURU')
     % Trilium compact 120s poshole 2 generation TC120-PH2
     A0 = 4.34493e17
     % Zeros 6

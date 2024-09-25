@@ -282,8 +282,8 @@ for ee = 1:length(buscar)
             %% Figura
             if teta == 0
                 
-                [h, leyenda] = figure_ee(ee, f, HV, leyenda, estac);
-                drawnow
+                %[h, leyenda] = figure_ee(ee, f, HV, leyenda, estac);
+                %drawnow
 
                 % print(gcf,nombgrab0(1:end-4),'-dpng','-r600')
                 % close(h)
