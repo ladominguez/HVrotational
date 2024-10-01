@@ -42,15 +42,15 @@ factap = 0.0;
 dt = 0.01;
 
 %% S
-buscar = {'NARA'};    %¡¡¡ESCOGER ESTACIÓN!!!%
-%buscar = listest;
+% buscar = {'NARA'};    %¡¡¡ESCOGER ESTACIÓN!!!%
+buscar = listest;
 
 %%
 if ~exist(rutagrab,'dir'); mkdir(rutagrab); end
 
 % Ciclo estaciones
 [~,Nbuscar] = ismember(buscar,listest);
-for k = 1:length(buscar)
+for k = 2:length(buscar)
     estac = listest{Nbuscar(k)};
 
     fprintf(1,'%d%s%d%s%s\n',k,sep,length(buscar),' --> ',estac);
@@ -61,7 +61,9 @@ for k = 1:length(buscar)
     listreg = dir(fullfile(rutaarch,estac,'*.sac'));
     listreg = {listreg.name}'; %name
     listregtot = cell(length(listreg),4);
-    for i = 1:length(listreg)
+    cont0 = [];
+    interv = 100:120;
+    for i = interv %length(listreg)
         REG = [rutaarch,estac,sep,listreg{i}];
         [~,~,datREG] = rdsac(REG);
         ymd = datetime(datREG.NZYEAR,01,0)+days(datREG.NZJDAY);
@@ -73,7 +75,9 @@ for k = 1:length(buscar)
         if contains(datREG.KCMPNM,'N'); direc = 'NS'; end
         if contains(datREG.KCMPNM,'Z'); direc = 'VE'; end
         listregtot(i,:) = [listreg(i) {fechajuliana} {fechaymd} {direc}];
+        cont0 = [cont0;i];
     end
+    listregtot = listregtot(cont0,:);
     dias = unique(listregtot(:,2));
 
     buscardia = dias;
