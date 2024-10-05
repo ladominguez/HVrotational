@@ -1,6 +1,10 @@
 clear all
 close all
 
+% check https://www.passcal.nmt.edu/response_plotter
+CMG40T = readtable('./instrument_responses/GuralpCMG40TResults.csv'); 
+A0_40T = 5.714046123e8;
+
 Tmax = 500; 
 Tmin = 1/50;
 
@@ -23,6 +27,8 @@ loglog(freq, H_transferencia,'g','linewidth',2)
 
 H_transferencia = obtener_funcion_transferencia(freq, 'PURU');
 loglog(freq, H_transferencia,'k','linewidth',2)
+
+loglog(CMG40T.freq, CMG40T.mag/800, 'ko')
 
 legend('Sillicon Audio', 'Reftek 151B', 'Guralp 40T', 'Trillium', 'location', 'best')
  

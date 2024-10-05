@@ -32,17 +32,17 @@ if contains(station, 'AZUL') || contains(station, 'TAHU') || contains(station, '
 
 elseif contains(station, 'NARA') || contains(station, 'CRIS')
     % TODO - Guralp 40T
-    A0 = 2304000
-    K = 2*400
+    A0 = 5.714046123E+08;
+    K = 2*400;
     % Zeros 2
     % Z1 = 0
     % Z2 = 0
     % Poles 5
-    p1 = -11.78e-3 + 11.78e-3i;
-    p2 = -11.78e-3 - 11.78e-3i;
-    p3 = -160;
-    p4 = -80;
-    p5 = -180;
+    p1 = -0.1486 + 0.1486i;
+    p2 = -0.1486 - 0.1486i;
+    p3 = -502.65;
+    p4 = -1005;
+    p5 = -1131;
     H_transferencia = A0*s.^2./((s-p1).*(s-p2).*(s-p3).*(s-p4).*(s-p5));
 
 elseif contains(station, 'BARA') || contains(station, 'TOME') || contains(station,'HUIR') || contains(station,'CONE')
@@ -62,9 +62,10 @@ elseif contains(station, 'BARA') || contains(station, 'TOME') || contains(statio
     c3 = 355.38;
     c4 = 63165;
     H_transferencia = A0*s.^2./((s.^2 + c1*s + c2).*(s.^2 + c3*s + c4));
+
 elseif contains(station,'PURU')
     % Trilium compact 120s poshole 2 generation TC120-PH2
-    A0 = 4.34493e17
+    A0 = 4.34493e17;
     % Zeros 6
     % Z1=Z2=0
     z3 = -392;
@@ -87,3 +88,4 @@ elseif contains(station,'PURU')
 else
     disp(['Sensor no encontrado']);
 end
+H_transferencia = abs(H_transferencia);

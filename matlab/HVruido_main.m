@@ -21,18 +21,18 @@ factap = 0.01;
 % onebit: 1=SI, 0=NO
 
 % SELECCIONAR DATOS
-NdiasHV = 3;
-segvent = [200];         % Segundos de las ventanas para inversión
+NdiasHV = 1;
+segvent = [100];         % Segundos de las ventanas para inversión
 porctrasl = [25];        % Porcentaje de traslape de las ventanas
 normalizac = [2 0];      % Normalización: [band,onebit]
-tiempoHV = [24*NdiasHV*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
+tiempoHV = [5*NdiasHV*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
 ventaleatHV = 0;         % 1=ventanas aleatoria, 0=ventanas continuas
 NvBootstrap = 1;         % Número de ventanas para el boostrap
 tSTA = 1; %1.35;         % En segundos
 tLTA = 60;               % En segundos
-Smax = 3;                % 0=todas las ventanas
+Smax = 3.5;                % 0=todas las ventanas
 Smin = 0.2;
-dfnew = 0.001;
+dfnew = 1;
 
 % Si baja el tLTA es más conservador
 itertot = length(segvent)*length(porctrasl)*length(normalizac(:,1))*length(tiempoHV);
@@ -45,7 +45,7 @@ bal = find(ismember(listest,[{'.'};{'..'}])==1);
 listest(bal) = [];
 
 buscar = listest;
-buscar = {'06_TOME'};        % ¡¡¡ESCOGER ESTACIÓN!!!
+buscar = {'TOME'};        % ¡¡¡ESCOGER ESTACIÓN!!!
 
 %% Invierte la escala de colores,se puede comentar
 col = get_colors(itertot);
