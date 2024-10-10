@@ -3,7 +3,7 @@ close all
 format short
 
 cargar_rutas_locales
-addpath('utils')
+%addpath('utils')
 
 %% DATOS INICIALES
 senhal = 'noise';
@@ -44,8 +44,8 @@ listest = {listest.name}';
 bal = find(ismember(listest,[{'.'};{'..'}])==1);
 listest(bal) = [];
 
-buscar = listest;
-buscar = {'TOME'};        % ¡¡¡ESCOGER ESTACIÓN!!!
+%buscar = listest;
+buscar = {'AZUL'};        % ¡¡¡ESCOGER ESTACIÓN!!!
 
 %% Invierte la escala de colores,se puede comentar
 col = get_colors(itertot);

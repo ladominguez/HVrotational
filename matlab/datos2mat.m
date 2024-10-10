@@ -42,8 +42,8 @@ factap = 0.0;
 dt = 0.01;
 
 %% S
-% buscar = {'NARA'};    %¡¡¡ESCOGER ESTACIÓN!!!%
-buscar = listest;
+buscar = {'AZUL'};    %¡¡¡ESCOGER ESTACIÓN!!!%
+%buscar = listest;
 
 %%
 if ~exist(rutagrab,'dir'); mkdir(rutagrab); end
