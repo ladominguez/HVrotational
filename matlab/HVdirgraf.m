@@ -10,7 +10,7 @@ listest = listest0(bal);
 bal = find(ismember(listest,[{'.'};{'..'}])==1);
 listest(bal) = [];
 
-fid = fopen('/home/mbaenar/SynologyDrive/estacMASE2.txt');
+fid = fopen('/home/mbaenar/SynologyDrive/HVrotational/matlab/estacMASE2.txt');
 textscan(fid,'%s',3);
 estacRED = textscan(fid,'%s %f %f %*[^\n]');
 fclose(fid);
@@ -133,68 +133,68 @@ for k = 1:length(buscar)
     Ntetalista = [Ntetalista;Nteta];
     Ntetalista2 = [Ntetalista2;Nteta2];
         
-    figure
-    tiledlayout(2,2);
-    set(gcf,'position',get(0,'Screensize'))
-%     if k == 1
-%         h = tiledlayout(2,3);%
-%     end
-    
-    nexttile
-    HVSRdib = HVdircont;
-    contourf(fgrab(Nflim1graf:Nflim2graf),tetavec,HVSRdib(:,Nflim1graf:Nflim2graf),'linecolor','none'); shading interp
-    line([flim1graf flim2graf],[90 90],'color','k')
-    view([0 0 1])
-    % xlim([0.01 fgrab(end)])
-    xlim([flim1graf flim2graf])
-    ylim([0 180])
-    title(estac,'fontname','Times New Roman','fontSize',14,'interpreter','latex')
-    xlabel('Frequency, $f$ (Hz)','fontname','Times New Roman','fontsize',14,'interpreter','latex')
-    ylabel('Rotation angle, $\phi$ (deg)','fontname','Times New Roman','fontsize',14,'interpreter','latex')
-    set(gca,'xscale','log')
-    set(gca,'ytick',0:30:180)
-    set(gca,'fontname','Times New Roman','fontsize',14)
-    set(gcf,'color','white')
-    grid on
-    colormap(jet)
-    cb = colorbar;
-    caxis([0 (max(max(HVSRdib(:,Nflim1graf:Nflim2graf))))])
-    % cb.Label.String = '$H/V$ amplitude';
-    set(cb,'fontname','Times New Roman','fontSize',14)
-    text(0.6,-25,[{'$H^\prime/V(\phi,f)$'};{'amplitude'}],'fontname','Times New Roman', ...
-        'fontsize',14,'interpreter','latex','verticalalignment','bottom')
-
-    nexttile
-    % for iii = 1:length(tetavec)
-    %     Nteta = iii;
-    semilogx(fgrab(Nflim1graf:Nflim2graf),HVmeangrab(Nflim1graf:Nflim2graf),'k','linewidth',2); hold on
-    semilogx(fgrab(Nflim1graf:Nflim2graf),HVdircont(Nteta,Nflim1graf:Nflim2graf),'r','linewidth',2); hold on
-    semilogx(fgrab(Nflim1graf:Nflim2graf),HVdir(Nteta,Nflim1graf:Nflim2graf),'--b','linewidth',2); hold on
-    limy = max(HVmeangrab(Nflim1graf:Nflim2graf));
-    fill(fgrab([Nf1,Nf2,Nf2,Nf1,Nf1]),[0,0,limy,limy,0],colfill,'facealpha',0.2); hold on
-    xlim([flim1graf flim2graf])
-    % ylim([0 20]) %[0 limy+3]
-    % title([num2str(tetavec(Nteta)),' deg'],'fontname','Times New Roman','fontSize',11)
-    xlabel('Frequency, $f$ (Hz)','fontname','Times New Roman','fontsize',14,'interpreter','latex')
-    ylabel('$H/V$ amplitude','fontname','Times New Roman','fontsize',14,'interpreter','latex')
-    texto = [{['f = ',num2str((round(fgrab(Nfmax)*100)/100)),' Hz']}, ...
-        {['γ = ',num2str((round(gamamax(end)*10000)/10000)*100),'%']}];
-    text(fgrab(Nfmax),1,texto,'fontname','Times New Roman','fontsize',14)
-%     if k == 1 || k == 2
-        % text(0.2,1.5,['\gamma = ',num2str((round(gamamax(end)*10000)/10000)*100),'%'],'fontname','Times New Roman','fontsize',14)
-%     end
-    set(gca,'xscale','log')
-    set(gca,'fontname','Times New Roman','fontsize',14)
-    set(gcf,'color','white')
-    grid on
-    tetamod = tetavec(Nteta)+90;
-    if tetamod > 180;tetamod = tetamod-180; end
-    % leg = legend('$H/V$ total',['$H^\prime/V(\phi,f), \phi=',num2str(tetavec(Nteta)),'^o$'],['$H^\prime/V(\phi,f), \phi=',num2str(tetamod),'^o$'],[num2str(flim3),' Hz$\leq f\leq$',num2str(flim4),' Hz']);
-    leg = legend('$H/V$ total',['$H^\prime/V(\phi,f), \phi=',num2str(tetavec(Nteta)),'^o$'],['$H^\prime/V(\phi,f), \phi=',num2str(tetamod),'^o$']);
-    set(leg,'fontname','Times New Roman','fontSize',13,'interpreter','latex')
-    
-    saveas(gcf,[rutagrab,estac,'.png'])
-    % print(gcf,[rutagrab,estac],'-dpng','-r300')
+%     figure
+%     tiledlayout(2,2);
+%     set(gcf,'position',get(0,'Screensize'))
+% %     if k == 1
+% %         h = tiledlayout(2,3);%
+% %     end
+% 
+%     nexttile
+%     HVSRdib = HVdircont;
+%     contourf(fgrab(Nflim1graf:Nflim2graf),tetavec,HVSRdib(:,Nflim1graf:Nflim2graf),'linecolor','none'); shading interp
+%     line([flim1graf flim2graf],[90 90],'color','k')
+%     view([0 0 1])
+%     % xlim([0.01 fgrab(end)])
+%     xlim([flim1graf flim2graf])
+%     ylim([0 180])
+%     title(estac,'fontname','Times New Roman','fontSize',14,'interpreter','latex')
+%     xlabel('Frequency, $f$ (Hz)','fontname','Times New Roman','fontsize',14,'interpreter','latex')
+%     ylabel('Rotation angle, $\phi$ (deg)','fontname','Times New Roman','fontsize',14,'interpreter','latex')
+%     set(gca,'xscale','log')
+%     set(gca,'ytick',0:30:180)
+%     set(gca,'fontname','Times New Roman','fontsize',14)
+%     set(gcf,'color','white')
+%     grid on
+%     colormap(jet)
+%     cb = colorbar;
+%     caxis([0 (max(max(HVSRdib(:,Nflim1graf:Nflim2graf))))])
+%     % cb.Label.String = '$H/V$ amplitude';
+%     set(cb,'fontname','Times New Roman','fontSize',14)
+%     text(0.6,-25,[{'$H^\prime/V(\phi,f)$'};{'amplitude'}],'fontname','Times New Roman', ...
+%         'fontsize',14,'interpreter','latex','verticalalignment','bottom')
+% 
+%     nexttile
+%     % for iii = 1:length(tetavec)
+%     %     Nteta = iii;
+%     semilogx(fgrab(Nflim1graf:Nflim2graf),HVmeangrab(Nflim1graf:Nflim2graf),'k','linewidth',2); hold on
+%     semilogx(fgrab(Nflim1graf:Nflim2graf),HVdircont(Nteta,Nflim1graf:Nflim2graf),'r','linewidth',2); hold on
+%     semilogx(fgrab(Nflim1graf:Nflim2graf),HVdir(Nteta,Nflim1graf:Nflim2graf),'--b','linewidth',2); hold on
+%     limy = max(HVmeangrab(Nflim1graf:Nflim2graf));
+%     fill(fgrab([Nf1,Nf2,Nf2,Nf1,Nf1]),[0,0,limy,limy,0],colfill,'facealpha',0.2); hold on
+%     xlim([flim1graf flim2graf])
+%     % ylim([0 20]) %[0 limy+3]
+%     % title([num2str(tetavec(Nteta)),' deg'],'fontname','Times New Roman','fontSize',11)
+%     xlabel('Frequency, $f$ (Hz)','fontname','Times New Roman','fontsize',14,'interpreter','latex')
+%     ylabel('$H/V$ amplitude','fontname','Times New Roman','fontsize',14,'interpreter','latex')
+%     texto = [{['f = ',num2str((round(fgrab(Nfmax)*100)/100)),' Hz']}, ...
+%         {['γ = ',num2str((round(gamamax(end)*10000)/10000)*100),'%']}];
+%     text(fgrab(Nfmax),1,texto,'fontname','Times New Roman','fontsize',14)
+% %     if k == 1 || k == 2
+%         % text(0.2,1.5,['\gamma = ',num2str((round(gamamax(end)*10000)/10000)*100),'%'],'fontname','Times New Roman','fontsize',14)
+% %     end
+%     set(gca,'xscale','log')
+%     set(gca,'fontname','Times New Roman','fontsize',14)
+%     set(gcf,'color','white')
+%     grid on
+%     tetamod = tetavec(Nteta)+90;
+%     if tetamod > 180;tetamod = tetamod-180; end
+%     % leg = legend('$H/V$ total',['$H^\prime/V(\phi,f), \phi=',num2str(tetavec(Nteta)),'^o$'],['$H^\prime/V(\phi,f), \phi=',num2str(tetamod),'^o$'],[num2str(flim3),' Hz$\leq f\leq$',num2str(flim4),' Hz']);
+%     leg = legend('$H/V$ total',['$H^\prime/V(\phi,f), \phi=',num2str(tetavec(Nteta)),'^o$'],['$H^\prime/V(\phi,f), \phi=',num2str(tetamod),'^o$']);
+%     set(leg,'fontname','Times New Roman','fontSize',13,'interpreter','latex')
+% 
+%     saveas(gcf,[rutagrab,estac,'.png'])
+%     % print(gcf,[rutagrab,estac],'-dpng','-r300')
         
     listafrec(k,:) = [str2num(estac(3:end)) fgrab(Nfmax)];
 end
@@ -204,6 +204,38 @@ T0lista = 1./f0lista;
 maxT0lista = max(T0lista);
 minT0lista = min(T0lista);
 porc = length(hjet(:,1))/maxT0lista;
+
+%%
+MapLatLimit = [17 21];
+MapLonLimit = [-102.5 -101];
+
+figure
+geolimits(MapLatLimit,MapLonLimit)
+geobasemap satellite
+
+tamanofuente = 18;
+for k = 1:length(buscar)
+    filacolor = fix(porc*T0lista(k));
+    if filacolor > length(hjet(:,1)); filacolor = length(hjet(:,1)); end
+    if filacolor < 1; filacolor = 1; end
+    lat(k,1) = latest(Nbuscar(k));
+    lon(k,1) = lonest(Nbuscar(k));
+    est(k,1) = vecest(Nbuscar(k));
+
+    col = 'white';
+    escmax = (gamamaxlista(k)/2)/2; 
+    geoplot([lat(k),lat(k)-sind(tetavec(Ntetalista(k)))*escmax],[lon(k),lon(k)-cosd(tetavec(Ntetalista(k)))*escmax],col,'LineWidth',2); hold on
+    geoplot([lat(k),lat(k)+sind(tetavec(Ntetalista(k)))*escmax],[lon(k),lon(k)+cosd(tetavec(Ntetalista(k)))*escmax],col,'LineWidth',2); hold on
+
+    text(lat(k),lon(k)+0.1,est{k},'color','white','fontname','Times New Roman','fontSize',18); hold on
+end
+geoplot(lat,lon,'.','markersize',20,'linewidth',2,'MarkerEdgeColor','white','markerfacecolor','none'); hold on;  % col(prof(jj),:)
+geolimits(MapLatLimit,MapLonLimit)
+title('$\gamma_{max}$ (4.5 s $\leq T_s \leq$ 5.5 s)','fontname','Times New Roman','fontSize',tamanofuente,'interpreter','latex')
+
+set(gcf,'Position',get(0,'Screensize'))
+set(gcf,'color','white')
+set(gca,'fontname','Times New Roman','fontSize',tamanofuente)
 
 %%
 MapLatLimit = [21 17];
@@ -219,45 +251,23 @@ for k = 1:length(buscar)
     lat(k,1) = latest(Nbuscar(k));
     lon(k,1) = lonest(Nbuscar(k));
     est(k,1) = vecest(Nbuscar(k));
+
     col = 'r';
-
-    escmax = (gamamaxlista(k)/2)/100;    
-    vectarrow2([lon(k),lat(k)],[lon(k)+cosd(tetavec(Ntetalista(k)))*escmax,lat(k)+sind(tetavec(Ntetalista(k)))*escmax],0.5,0.3,col,1.5); hold on; axis equal
+    escmax = (gamamaxlista(k)/2)/2;    
     vectarrow2([lon(k),lat(k)],[lon(k)-cosd(tetavec(Ntetalista(k)))*escmax,lat(k)-sind(tetavec(Ntetalista(k)))*escmax],0.5,0.3,col,1.5); hold on; axis equal
+    vectarrow2([lon(k),lat(k)],[lon(k)+cosd(tetavec(Ntetalista(k)))*escmax,lat(k)+sind(tetavec(Ntetalista(k)))*escmax],0.5,0.3,col,1.5); hold on; axis equal
 
-    text(lon(k)-0.0015,lat(k)-0.0015,est{k}(3:end),'fontname','Times New Roman','fontSize',14)
+    text(lon(k)-0.0015,lat(k)-0.0015,est{k},'fontname','Times New Roman','fontSize',14)
 end
 plot(lon,lat,'+k','markersize',8); hold on;  % col(prof(jj),:)
 % text(lon-0.001,lat-0.0012,bal(:,3:end),'color','r','fontname','Times New Roman','fontSize',10)
 % text(lon,lat-0.001,num2cell(tetavec(Ntetalista)),'fontname','Times New Roman','fontSize',7)
 
-title('$\gamma_{max}$ (4.5 s $\leq T_s \leq$ 5.5 s)','fontname','Times New Roman','fontSize',tamanofuente,'interpreter','latex')
+Tmin = num2str(round(1/flim2*10)/10);
+Tmax = num2str(round(1/flim1*10)/10);
+title(['$\gamma_{max}$ (',Tmin,' s $\leq T_s \leq$ ',Tmax,' s)'],'fontname','Times New Roman','fontSize',tamanofuente,'interpreter','latex')
 xlim([MapLonLimit(1) MapLonLimit(2)])
-ylim([MapLatLimit(1) MapLatLimit(2)])
+ylim([MapLatLimit(2) MapLatLimit(1)])
 set(gcf,'Position',get(0,'Screensize'))
 set(gcf,'color','white')
 set(gca,'fontname','Times New Roman','fontSize',tamanofuente)
-
-set(gca,'XTick',-99:0.02:-98.93)
-xt = get(gca,'XTickLabel');
-for jj = 1:length(xt(:,1))
-    xt(jj) = strcat({[xt{jj}(2:end),'°W']});
-end
-set(gca,'XTickLabel',xt)
-set(gca,'YTick',19.22:0.01:19.27)
-yt = get(gca,'YTickLabel');
-for jj = 1:length(yt(:,1))
-    yt(jj) = strcat(yt(jj),'°N');
-end
-set(gca,'YTickLabel',yt)
-
-Nticks = linspace(0,1,6);
-xtick = linspace(minT0lista,maxT0lista,length(Nticks));
-xtick = ceil(xtick*100)/100;
-xtickstr = [];
-for xx = 1:length(xtick)
-    xtickstr = [xtickstr {[num2str(xtick(xx)) ' s']}];
-end
-
-text(-98.941,19.26,[{'Xico'},{'volcano'}],'fontname','Times New Roman', ...
-    'fontSize',tamanofuente,'horizontalalignment','center')
