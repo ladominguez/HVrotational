@@ -1,5 +1,5 @@
 clear; clc
-close all
+% close all
 format short
 
 cargar_rutas_locales
@@ -14,18 +14,18 @@ w1new = 0; %1;     0=s/filtro
 w2new = 0; %255.9; 0=s/filtro
 
 % Factor de esquina para taper de señales
-factap = 0.01;
+factap = 0.0;
 
 % *****NORMALIZACIÓN*****
 % band:   0=ninguna, 2=suma3direcc, 3=SW
 % onebit: 1=SI, 0=NO
 
 % SELECCIONAR DATOS
-NdiasHV = 1;
-segvent = [100];         % Segundos de las ventanas para inversión
-porctrasl = [25];        % Porcentaje de traslape de las ventanas
+NdiasHV0 = 5;
+segvent = [500];         % Segundos de las ventanas para inversión
+porctrasl = [50];        % Porcentaje de traslape de las ventanas
 normalizac = [2 0];      % Normalización: [band,onebit]
-tiempoHV = [5*NdiasHV*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
+tiempoHV = [(NdiasHV0*24)*60];      % Tiempo (minutos) para cálculo de cada H/V (Tiempo de registro manipulable)
 ventaleatHV = 0;         % 1=ventanas aleatoria, 0=ventanas continuas
 NvBootstrap = 1;         % Número de ventanas para el boostrap
 tSTA = 1; %1.35;         % En segundos
@@ -44,15 +44,15 @@ listest = {listest.name}';
 bal = find(ismember(listest,[{'.'};{'..'}])==1);
 listest(bal) = [];
 
-%buscar = listest;
-buscar = {'AZUL'};        % ¡¡¡ESCOGER ESTACIÓN!!!
+buscar = listest;
+% buscar = {'AZUL'};        % ¡¡¡ESCOGER ESTACIÓN!!!
 
 %% Invierte la escala de colores,se puede comentar
 col = get_colors(itertot);
 
 %% Ciclo principal
 % tetarot = 0:45:180;
-tetarot = 0;
+tetarot = 0:2:180;
 
 if length(tetarot) > 1 && isempty(find(tetarot==90))
     fprintf(1,'%s\n','tetarot debe contener el ángulo 90°');
@@ -70,8 +70,15 @@ for ee = 1:length(buscar)
 
     listreg = dir(fullfile(rutaarch,estac,unidad,'*.mat'));
     listreg = {listreg.name}'; %name
+    % listreg = listreg(1:end);
+
+    if isempty(listreg); continue; end
 
     listdias = obtener_lista_dias(listreg);
+
+    NdiasHV = NdiasHV0;
+    if contains(estac,'CRIS'); NdiasHV = 1; end
+    if length(listdias) < NdiasHV; NdiasHV = length(listdias); end
 
     % buscardia = listdias;
     % buscardia = {'20200929';'20200116';'20201129'};
@@ -86,7 +93,11 @@ for ee = 1:length(buscar)
     leyenda = [];
     % Loop por cada día
     %for dd = 1:length(Nbuscardia)
-    for dd = 1 %:length(diaini)
+    bal = 1;
+    if contains(estac,'TOME'); bal = length(diaini); end
+    if contains(estac,'CRIS'); bal = length(diaini); end
+
+    for dd = bal
             
         inddia = diaini(dd);
         %k = Nbuscardia(dd);
@@ -137,9 +148,11 @@ for ee = 1:length(buscar)
             % CICLO LONGITUD DE VENTANAS
             % *****************************************************
             for vv = 1:length(segvent)
-
+                flim1 = 0.05; %frec(1); %0.01
+                flim2 = 2; %fmax; %20;
+                f = [];
                 [f, fin, ini, ptosvent, Nespec, df] = obtener_vector_de_frecuencia(segvent(vv), ...
-                    dt, dfnew, fmax);
+                    dt, dfnew, fmax,flim1,flim2);
 
                 Nfrecred = fin-ini+1;
 
@@ -150,7 +163,6 @@ for ee = 1:length(buscar)
                 for tt = 1:length(porctrasl)
 
                     % VENTANEO
-                   
                     [Nventefec, M, iv, fv, wincleantot, wincleanEW, wincleanNS, ...
                         wincleanVE, STALTAEW, STALTANS, STALTAVE] = ventaneo(porctrasl(tt), ...
                         ptosvent, ESTR, dt, tSTA, tLTA, Smax, Smin, Ndias );
@@ -224,15 +236,15 @@ for ee = 1:length(buscar)
                         for nh = 1:length(tiempoHV)
                             iter = iter+1;
                             % fprintf(1,'\t%s%s%s%s%d%s%d\n',estac,'_',listdias{inddia},' --> iter ',iter,'/',itertot);
-                            suav = 0;   %0=no; 1=sí
+                            suav = 1;   %0=no; 1=sí
 
                             % CÁLCULO DE H/V
                             [HVtot,NVmean,EVmean,NventHV,vini,tiempoHVnuevo,numHV,HVvent] = F_HVruido(f,fNSvent,fEWvent, ...
                                 fVEvent,fHHvent,segvent(vv),porctrasl(tt),tiempoHV(nh),suav,ventaleatHV,NvBootstrap);
 
-                            HVtot = multiplicar_funcion_transferencia(HVtot,f, estac);
-                            NVmean = multiplicar_funcion_transferencia(NVmean,f, estac);
-                            EVmean = multiplicar_funcion_transferencia(EVmean,f, estac);
+                            % HVtot = multiplicar_funcion_transferencia(HVtot,f, estac);
+                            % NVmean = multiplicar_funcion_transferencia(NVmean,f, estac);
+                            % EVmean = multiplicar_funcion_transferencia(EVmean,f, estac);
 
                             tiempoHVnuevo_str = num2str(round(tiempoHVnuevo*100)/100);
                             clavecomb = ['CD-HV',tiempoHVnuevo_str,'hr','-',nombcomb,'-Nw',num2str(NventHV(1)),'-NwBS',num2str(numHV)];
@@ -288,16 +300,16 @@ for ee = 1:length(buscar)
                 % print(gcf,nombgrab0(1:end-4),'-dpng','-r600')
                 % close(h)
 
-                % Generación de archivo de texto para inversión
-                f1 = 0.001;
-                f2 = 1;
-                paso = 3;
-                fs = 6;
-                [HVesc,fsesc] = archivo_inversion(HV.HVmean_comb{1},HV.fcomb{1},f1,f2,paso,fs);
-                dlmwrite([rutagrab,'HV-',estac,'.txt'],[fsesc,HVesc],'delimiter','\t','precision','%14.8f')
+                % % Generación de archivo de texto para inversión
+                % f1 = 0.001;
+                % f2 = 1;
+                % paso = 3;
+                % fs = 6;
+                % [HVesc,fsesc] = archivo_inversion(HV.HVmean_comb{1},HV.fcomb{1},f1,f2,paso,fs);
+                % dlmwrite([rutagrab,'HV-',estac,'.txt'],[fsesc,HVesc],'delimiter','\t','precision','%14.8f')
             end
         end
-        % save(nombgrab0,'HV','-v7.3');
+        savearch(nombgrab0,HV);
 
         % % Figura HV direccional
         % contourf(HV.fcomb{1},HV.tetarot,HV.HVdir_comb1); shading interp
@@ -312,4 +324,3 @@ for ee = 1:length(buscar)
         % legend(legtetaevec,'interpreter','none')
     end
 end
-

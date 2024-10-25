@@ -31,10 +31,10 @@ LTAmeanmax = max(LTAmean(and(LTAmean>0,winclean==1)));
 if isempty(LTAmeanmax)
     winclean(winclean==1) = 0;
 end
-% Elimina picos superiores al 90% del promedio máximo de la señal
+% Elimina picos superiores al 95% del promedio máximo de la señal
 for i = 1:M
     if winclean(i) == 1
-        if LTAmean(i) > 0.9*LTAmeanmax
+        if LTAmean(i) > 0.95*LTAmeanmax
             winclean(i) = 0;
         end
     end

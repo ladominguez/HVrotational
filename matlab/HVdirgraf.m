@@ -10,16 +10,16 @@ listest = listest0(bal);
 bal = find(ismember(listest,[{'.'};{'..'}])==1);
 listest(bal) = [];
 
-% fid = fopen(rutaestac);
-% textscan(fid,'%s',3);
-% estacRED = textscan(fid,'%s %f %f %*[^\n]');
-% fclose(fid);
-% vecest = estacRED{1};
-% latest = estacRED{3};
-% lonest = estacRED{2};
+fid = fopen('/home/mbaenar/SynologyDrive/estacMASE2.txt');
+textscan(fid,'%s',3);
+estacRED = textscan(fid,'%s %f %f %*[^\n]');
+fclose(fid);
+vecest = estacRED{1};
+latest = estacRED{3};
+lonest = estacRED{2};
 
-% buscar = listest;
-buscar = {'TOME'};
+buscar = listest;
+% buscar = {'TOME'};
 
 listabal = cell2mat(listest);
 [~,Nbuscar] = ismember(buscar,listabal);
@@ -47,7 +47,9 @@ for k = 1:length(buscar)
     listreg = {listreg.name}';
     listreg = strrep(listreg,'.mat','');
 
-    load(fullfile(rutagrab,estac,listreg{1}));
+    if isempty(listreg); continue; end
+
+    load(fullfile(rutagrab,estac,listreg{end}));
     tetavec = HV.tetarot;
     ind90 = (length(tetavec)+1)/2;
     HVdir = HV.HVdir_comb1;
@@ -55,8 +57,8 @@ for k = 1:length(buscar)
     fgrab = HV.f_comb1;
     HVmeangrab = HV.HVtot_comb1;
 
-    flim1 = fgrab(1); %20
-    flim2 = fgrab(end);
+    flim1 = 0.07; %fgrab(1); %20
+    flim2 = 0.6; %fgrab(end);
     
     Nflim1 = find(fgrab>=flim1,1,'first');
     Nflim2 = find(fgrab>=flim2,1,'first');
@@ -66,8 +68,8 @@ for k = 1:length(buscar)
     flim4 = fgrab(Nfmax)+0.0; %0.22
     Nf1 = find(fgrab>=flim3,1); %
     Nf2 = find(fgrab>=flim4,1); %
-    flim1graf = 0.0; %20 fgrab(end)  % para graficar
-    flim2graf = 50; %55 fgrab(end)  % para graficar
+    flim1graf = fgrab(1); %20 0.0  % para graficar
+    flim2graf = 0.6; %fgrab(end); %55 50  % para graficar
     paso = 1;
     Ntickmax = 6;
 
@@ -93,7 +95,7 @@ for k = 1:length(buscar)
     gamamode = mode(gamanumerador./gamadenominador,2);
     gama = gamamean;
 
-    [gamamax0,Ntetamax0] = maximos(gama,2);
+    [gamamax0,Ntetamax0] = maxmin(gama,1);
     if length(Ntetamax0) == 1
         Ntetamax0 = [Ntetamax0;length(tetavec)];
         gamamax0 = [gamamax0;gama(end)];
@@ -108,7 +110,7 @@ for k = 1:length(buscar)
     [~,bal2] = max(max(HVdircont(:,Nf1:Nf2)));
     Nteta = bal1(bal2);
     
-    [gamamin0,Ntetamin0] = minimos(gama,2);
+    [gamamin0,Ntetamin0] = maxmin(gama,-1);
     if length(Ntetamin0) == 1
         Ntetamin0 = [1;Ntetamin0];
         gamamin0 = [gama(1);gamamin0];
@@ -159,7 +161,7 @@ for k = 1:length(buscar)
     caxis([0 (max(max(HVSRdib(:,Nflim1graf:Nflim2graf))))])
     % cb.Label.String = '$H/V$ amplitude';
     set(cb,'fontname','Times New Roman','fontSize',14)
-    text(30,-37,[{'$H^\prime/V(\phi,f)$'};{'amplitude'}],'fontname','Times New Roman', ...
+    text(0.6,-25,[{'$H^\prime/V(\phi,f)$'};{'amplitude'}],'fontname','Times New Roman', ...
         'fontsize',14,'interpreter','latex','verticalalignment','bottom')
 
     nexttile
@@ -202,3 +204,60 @@ T0lista = 1./f0lista;
 maxT0lista = max(T0lista);
 minT0lista = min(T0lista);
 porc = length(hjet(:,1))/maxT0lista;
+
+%%
+MapLatLimit = [21 17];
+MapLonLimit = [-102.5 -101];
+
+figure
+tamanofuente = 18;
+bal = cell2mat(buscar);
+for k = 1:length(buscar)
+    filacolor = fix(porc*T0lista(k));
+    if filacolor > length(hjet(:,1)); filacolor = length(hjet(:,1)); end
+    if filacolor < 1; filacolor = 1; end
+    lat(k,1) = latest(Nbuscar(k));
+    lon(k,1) = lonest(Nbuscar(k));
+    est(k,1) = vecest(Nbuscar(k));
+    col = 'r';
+
+    escmax = (gamamaxlista(k)/2)/100;    
+    vectarrow2([lon(k),lat(k)],[lon(k)+cosd(tetavec(Ntetalista(k)))*escmax,lat(k)+sind(tetavec(Ntetalista(k)))*escmax],0.5,0.3,col,1.5); hold on; axis equal
+    vectarrow2([lon(k),lat(k)],[lon(k)-cosd(tetavec(Ntetalista(k)))*escmax,lat(k)-sind(tetavec(Ntetalista(k)))*escmax],0.5,0.3,col,1.5); hold on; axis equal
+
+    text(lon(k)-0.0015,lat(k)-0.0015,est{k}(3:end),'fontname','Times New Roman','fontSize',14)
+end
+plot(lon,lat,'+k','markersize',8); hold on;  % col(prof(jj),:)
+% text(lon-0.001,lat-0.0012,bal(:,3:end),'color','r','fontname','Times New Roman','fontSize',10)
+% text(lon,lat-0.001,num2cell(tetavec(Ntetalista)),'fontname','Times New Roman','fontSize',7)
+
+title('$\gamma_{max}$ (4.5 s $\leq T_s \leq$ 5.5 s)','fontname','Times New Roman','fontSize',tamanofuente,'interpreter','latex')
+xlim([MapLonLimit(1) MapLonLimit(2)])
+ylim([MapLatLimit(1) MapLatLimit(2)])
+set(gcf,'Position',get(0,'Screensize'))
+set(gcf,'color','white')
+set(gca,'fontname','Times New Roman','fontSize',tamanofuente)
+
+set(gca,'XTick',-99:0.02:-98.93)
+xt = get(gca,'XTickLabel');
+for jj = 1:length(xt(:,1))
+    xt(jj) = strcat({[xt{jj}(2:end),'°W']});
+end
+set(gca,'XTickLabel',xt)
+set(gca,'YTick',19.22:0.01:19.27)
+yt = get(gca,'YTickLabel');
+for jj = 1:length(yt(:,1))
+    yt(jj) = strcat(yt(jj),'°N');
+end
+set(gca,'YTickLabel',yt)
+
+Nticks = linspace(0,1,6);
+xtick = linspace(minT0lista,maxT0lista,length(Nticks));
+xtick = ceil(xtick*100)/100;
+xtickstr = [];
+for xx = 1:length(xtick)
+    xtickstr = [xtickstr {[num2str(xtick(xx)) ' s']}];
+end
+
+text(-98.941,19.26,[{'Xico'},{'volcano'}],'fontname','Times New Roman', ...
+    'fontSize',tamanofuente,'horizontalalignment','center')

@@ -43,14 +43,14 @@ dt = 0.01;
 
 %% S
 buscar = {'AZUL'};    %¡¡¡ESCOGER ESTACIÓN!!!%
-%buscar = listest;
+buscar = listest(1);
 
 %%
 if ~exist(rutagrab,'dir'); mkdir(rutagrab); end
 
 % Ciclo estaciones
 [~,Nbuscar] = ismember(buscar,listest);
-for k = 2:length(buscar)
+for k = 1:length(buscar)
     estac = listest{Nbuscar(k)};
 
     fprintf(1,'%d%s%d%s%s\n',k,sep,length(buscar),' --> ',estac);
@@ -62,8 +62,8 @@ for k = 2:length(buscar)
     listreg = {listreg.name}'; %name
     listregtot = cell(length(listreg),4);
     cont0 = [];
-    interv = 100:120;
-    for i = interv %length(listreg)
+    interv = length(listreg)-26:length(listreg); %199:199+26; %987-26:987
+    for i = interv
         REG = [rutaarch,estac,sep,listreg{i}];
         [~,~,datREG] = rdsac(REG);
         ymd = datetime(datREG.NZYEAR,01,0)+days(datREG.NZJDAY);
@@ -91,7 +91,9 @@ for k = 2:length(buscar)
         fechajuliana = listregtot{indreg(1),2};
         fechaymd = listregtot{indreg(1),3};
         nombarchgrab = [rutagrab,estac,sep,tiporeg,sep,fechaymd,'.mat'];
-        % if exist(nombarchgrab,'file') ~= 0; continue; end
+        if exist(nombarchgrab,'file') ~= 0; continue; end
+
+        if length(indreg) < 3; continue; end
 
         % Lectura SAC
         for ii = 1:3
