@@ -10,8 +10,8 @@ listest = listest0(bal);
 bal = find(ismember(listest,[{'.'};{'..'}])==1);
 listest(bal) = [];
 
-fid = fopen('/home/mbaenar/SynologyDrive/HVrotational/matlab/estacMASE2.txt');
-textscan(fid,'%s',3);
+fid = fopen(rutaestac);
+textscan(fid,'%s',4);
 estacRED = textscan(fid,'%s %f %f %*[^\n]');
 fclose(fid);
 vecest = estacRED{1};
@@ -194,7 +194,7 @@ for k = 1:length(buscar)
 %     set(leg,'fontname','Times New Roman','fontSize',13,'interpreter','latex')
 % 
 %     saveas(gcf,[rutagrab,estac,'.png'])
-%     % print(gcf,[rutagrab,estac],'-dpng','-r300')
+    % print(gcf,[rutagrab,estac],'-dpng','-r300')
         
     listafrec(k,:) = [str2num(estac(3:end)) fgrab(Nfmax)];
 end
@@ -205,11 +205,11 @@ maxT0lista = max(T0lista);
 minT0lista = min(T0lista);
 porc = length(hjet(:,1))/maxT0lista;
 
-%%
+%% Mapa con resultados de cada estación
 MapLatLimit = [17 21];
 MapLonLimit = [-102.5 -101];
 
-figure
+figure(2)
 geolimits(MapLatLimit,MapLonLimit)
 geobasemap satellite
 
@@ -223,7 +223,7 @@ for k = 1:length(buscar)
     est(k,1) = vecest(Nbuscar(k));
 
     col = 'white';
-    escmax = (gamamaxlista(k)/2)/2; 
+    escmax = (gamamaxlista(k)/2)/1; 
     geoplot([lat(k),lat(k)-sind(tetavec(Ntetalista(k)))*escmax],[lon(k),lon(k)-cosd(tetavec(Ntetalista(k)))*escmax],col,'LineWidth',2); hold on
     geoplot([lat(k),lat(k)+sind(tetavec(Ntetalista(k)))*escmax],[lon(k),lon(k)+cosd(tetavec(Ntetalista(k)))*escmax],col,'LineWidth',2); hold on
 
@@ -237,37 +237,39 @@ set(gcf,'Position',get(0,'Screensize'))
 set(gcf,'color','white')
 set(gca,'fontname','Times New Roman','fontSize',tamanofuente)
 
+% saveas(gcf,[rutagrab,'mapaHVdir.png'])
+
 %%
-MapLatLimit = [21 17];
-MapLonLimit = [-102.5 -101];
-
-figure
-tamanofuente = 18;
-bal = cell2mat(buscar);
-for k = 1:length(buscar)
-    filacolor = fix(porc*T0lista(k));
-    if filacolor > length(hjet(:,1)); filacolor = length(hjet(:,1)); end
-    if filacolor < 1; filacolor = 1; end
-    lat(k,1) = latest(Nbuscar(k));
-    lon(k,1) = lonest(Nbuscar(k));
-    est(k,1) = vecest(Nbuscar(k));
-
-    col = 'r';
-    escmax = (gamamaxlista(k)/2)/2;    
-    vectarrow2([lon(k),lat(k)],[lon(k)-cosd(tetavec(Ntetalista(k)))*escmax,lat(k)-sind(tetavec(Ntetalista(k)))*escmax],0.5,0.3,col,1.5); hold on; axis equal
-    vectarrow2([lon(k),lat(k)],[lon(k)+cosd(tetavec(Ntetalista(k)))*escmax,lat(k)+sind(tetavec(Ntetalista(k)))*escmax],0.5,0.3,col,1.5); hold on; axis equal
-
-    text(lon(k)-0.0015,lat(k)-0.0015,est{k},'fontname','Times New Roman','fontSize',14)
-end
-plot(lon,lat,'+k','markersize',8); hold on;  % col(prof(jj),:)
-% text(lon-0.001,lat-0.0012,bal(:,3:end),'color','r','fontname','Times New Roman','fontSize',10)
-% text(lon,lat-0.001,num2cell(tetavec(Ntetalista)),'fontname','Times New Roman','fontSize',7)
-
-Tmin = num2str(round(1/flim2*10)/10);
-Tmax = num2str(round(1/flim1*10)/10);
-title(['$\gamma_{max}$ (',Tmin,' s $\leq T_s \leq$ ',Tmax,' s)'],'fontname','Times New Roman','fontSize',tamanofuente,'interpreter','latex')
-xlim([MapLonLimit(1) MapLonLimit(2)])
-ylim([MapLatLimit(2) MapLatLimit(1)])
-set(gcf,'Position',get(0,'Screensize'))
-set(gcf,'color','white')
-set(gca,'fontname','Times New Roman','fontSize',tamanofuente)
+% MapLatLimit = [21 17];
+% MapLonLimit = [-102.5 -101];
+% 
+% figure
+% tamanofuente = 18;
+% bal = cell2mat(buscar);
+% for k = 1:length(buscar)
+%     filacolor = fix(porc*T0lista(k));
+%     if filacolor > length(hjet(:,1)); filacolor = length(hjet(:,1)); end
+%     if filacolor < 1; filacolor = 1; end
+%     lat(k,1) = latest(Nbuscar(k));
+%     lon(k,1) = lonest(Nbuscar(k));
+%     est(k,1) = vecest(Nbuscar(k));
+% 
+%     col = 'r';
+%     escmax = (gamamaxlista(k)/2)/2;    
+%     vectarrow2([lon(k),lat(k)],[lon(k)-cosd(tetavec(Ntetalista(k)))*escmax,lat(k)-sind(tetavec(Ntetalista(k)))*escmax],0.5,0.3,col,1.5); hold on; axis equal
+%     vectarrow2([lon(k),lat(k)],[lon(k)+cosd(tetavec(Ntetalista(k)))*escmax,lat(k)+sind(tetavec(Ntetalista(k)))*escmax],0.5,0.3,col,1.5); hold on; axis equal
+% 
+%     text(lon(k)-0.0015,lat(k)-0.0015,est{k},'fontname','Times New Roman','fontSize',14)
+% end
+% plot(lon,lat,'+k','markersize',8); hold on;  % col(prof(jj),:)
+% % text(lon-0.001,lat-0.0012,bal(:,3:end),'color','r','fontname','Times New Roman','fontSize',10)
+% % text(lon,lat-0.001,num2cell(tetavec(Ntetalista)),'fontname','Times New Roman','fontSize',7)
+% 
+% Tmin = num2str(round(1/flim2*10)/10);
+% Tmax = num2str(round(1/flim1*10)/10);
+% title(['$\gamma_{max}$ (',Tmin,' s $\leq T_s \leq$ ',Tmax,' s)'],'fontname','Times New Roman','fontSize',tamanofuente,'interpreter','latex')
+% xlim([MapLonLimit(1) MapLonLimit(2)])
+% ylim([MapLatLimit(2) MapLatLimit(1)])
+% set(gcf,'Position',get(0,'Screensize'))
+% set(gcf,'color','white')
+% set(gca,'fontname','Times New Roman','fontSize',tamanofuente)
