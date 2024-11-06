@@ -4,7 +4,7 @@ function [HVmean,NVmean,EVmean,NventHV, ...
 
 % Datos iniciales
 [N,Nv] = size(fNSvent);
-Nsuav = fix(N*0.0005);
+Nsuav = 3; fix(N*0.01);
 fs = 0; %50;
 
 trasl = segvent*(porctrasl/100);
