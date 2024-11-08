@@ -42,8 +42,13 @@ factap = 0.0;
 dt = 0.01;
 
 %% S
+<<<<<<< Updated upstream
 buscar = {'AZUL'};    %¡¡¡ESCOGER ESTACIÓN!!!%
 buscar = listest(1);
+=======
+%buscar = {'AGUA'};    %¡¡¡ESCOGER ESTACIÓN!!!%
+buscar = listest;
+>>>>>>> Stashed changes
 
 %%
 if ~exist(rutagrab,'dir'); mkdir(rutagrab); end
@@ -62,8 +67,13 @@ for k = 1:length(buscar)
     listreg = {listreg.name}'; %name
     listregtot = cell(length(listreg),4);
     cont0 = [];
+<<<<<<< Updated upstream
     interv = length(listreg)-26:length(listreg); %199:199+26; %987-26:987
     for i = interv
+=======
+    interv = 100:120;
+    for i = 1:length(listreg)
+>>>>>>> Stashed changes
         REG = [rutaarch,estac,sep,listreg{i}];
         [~,~,datREG] = rdsac(REG);
         ymd = datetime(datREG.NZYEAR,01,0)+days(datREG.NZJDAY);
