@@ -1,6 +1,8 @@
 .DS_Store
 data
 matlab/mat
+python/*SAC
+python/*PZ
 *.zip
 **/*.mat
 **/*.asv
