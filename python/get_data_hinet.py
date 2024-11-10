@@ -1,7 +1,7 @@
 from HinetPy import Client, win32
 
 # You need a Hi-net account to access their data
-client = Client("ladominguez", "love2Smile")
+client = Client("user", "password")
 client.select_stations("0101", ["N.KWSH", "N.IWNH","N.ASAH","N.NKWH", "N.YHTH"])
 data, ctable = client.get_continuous_waveform('0101', '201001010000', 20)
 # The request and downloading process will take several minutes
